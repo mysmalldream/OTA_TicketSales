@@ -1,18 +1,18 @@
 <template>
     <div class="table">
-        <!-- 分销商类别设置 -->
+        <!-- 票型类别设置 -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
                     <i class="el-icon-menu"></i> 基础设置</el-breadcrumb-item>
-                <el-breadcrumb-item>分销商类别设置</el-breadcrumb-item>
+                <el-breadcrumb-item>票型类别设置</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="plugins-tips">
             <el-button icon="edit" type="primary" @click="dialogFormVisible=true">新 增</el-button>
             <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
                 <el-form :model="form" ref="numberValidateForm">
-                    <el-form-item label="分销商类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '分销商类别不能为空'}]">
+                    <el-form-item label="票型类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '票型类别不能为空'}]">
                         <el-input v-model="form.name" auto-complete="off" placeholder="请选择活动区域"></el-input>
                     </el-form-item>
                     <el-form-item label="加价率(%):" :label-width="formLabelWidth" prop="condPercent" :rules="[{ required: true, message: '加价率不能为空'},{ type: 'number',max: 1.0, message: '加价率必须为不大于1.0的数字值'},]">
@@ -31,7 +31,7 @@
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column type="index" align=center label="编号" width="100">
             </el-table-column>
-            <el-table-column align=center prop="name" label="分销商类别">
+            <el-table-column align=center prop="name" label="票型类别">
             </el-table-column>
             <el-table-column align=center prop="condPercent" label="加价率(%)">
             </el-table-column>
@@ -42,7 +42,7 @@
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
                         <el-form :model="form" ref="numberValidateFormEditUI">
-                            <el-form-item label="分销商类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '分销商类别不能为空'}]">
+                            <el-form-item label="票型类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '票型类别不能为空'}]">
                                 <el-input v-model="form.name" auto-complete="off" placeholder="请选择活动区域"></el-input>
                             </el-form-item>
                             <el-form-item label="加价率(%):" :label-width="formLabelWidth" prop="condPercent" :rules="[{ required: true, message: '加价率不能为空'},{ type: 'number',max: 1.0, message: '加价率必须为不大于1.0的数字值'},]">
@@ -109,7 +109,7 @@ export default {
     methods: {
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/customType/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/ticketType/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -124,7 +124,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/customType/findPageData.action?pageIndex=" + `${val}`).then((res) => {
+            axios.get(common.apidomain + "/ticketType/findPageData.action?pageIndex=" + `${val}`).then((res) => {
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
@@ -153,7 +153,7 @@ export default {
                 }
             });
             // 提交表单数据
-            axios.post(common.apidomain + "/customType/add.action?name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan + "&pageIndex=" + this.pageCount).then((res) => {
+            axios.post(common.apidomain + "/ticketType/add.action?name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan + "&pageIndex=" + this.pageCount).then((res) => {
                 this.tableData = res.data.data;   //表格数据
                 this.currentPage = this.pageCount;
                 // console.log(res.data.data)
@@ -191,7 +191,7 @@ export default {
                 }
             });
             // 提交修改的表单数据
-            axios.post(common.apidomain + "/customType/edit.action?id=" + this.editID + "&name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan).then((res) => {
+            axios.post(common.apidomain + "/ticketType/edit.action?id=" + this.editID + "&name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan).then((res) => {
                 this.getimgs();   //自动刷新当前页面
             })
         },
@@ -207,7 +207,7 @@ export default {
                     type: 'success',
                     message: '删除成功!',
                 });
-                axios.post(common.apidomain + "/customType/delete.action?id=" + this.delID).then((res) => {
+                axios.post(common.apidomain + "/ticketType/delete.action?id=" + this.delID).then((res) => {
                     this.getimgs();   //自动刷新当前页面
                 })
             }).catch(() => {

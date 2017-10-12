@@ -45,11 +45,11 @@ export default {
                             title: '分销商类别设置'
                         },
                         {
-                            index: 'vueeditor',
+                            index: 'TicketTypeSet',
                             title: '票型类别设置'
                         },
                         {
-                            index: 'markdown',
+                            index: 'PriorityClassSet',
                             title: '优先级类别设置'
                         }
                     ]
