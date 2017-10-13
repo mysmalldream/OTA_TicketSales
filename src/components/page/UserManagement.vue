@@ -1,26 +1,38 @@
 <template>
     <div class="table">
-        <!-- 票型类别设置 -->
+        <!-- 用户管理 -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-menu"></i> 基础设置</el-breadcrumb-item>
-                <el-breadcrumb-item>票型类别设置</el-breadcrumb-item>
+                    <i class="el-icon-menu"></i> 用户管理设置</el-breadcrumb-item>
+                <el-breadcrumb-item>用户管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="plugins-tips">
-            <el-button icon="edit" type="primary" @click="dialogFormVisible=true">新 增</el-button>
+            <el-button icon="edit" type="primary" @click="dialogFormVisible=true,newAdd()">新 增</el-button>
             <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
                 <el-form :model="form" ref="numberValidateForm">
-                    <el-form-item label="票型类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '票型类别不能为空'}]">
-                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入票型类别"></el-input>
+                    <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
+                        <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
                     </el-form-item>
-                    <el-form-item label="加价率(%):" :label-width="formLabelWidth" prop="condPercent" :rules="[{ required: true, message: '加价率不能为空'},{ type: 'number',max: 1.0, message: '加价率必须为不大于1.0的数字值'},]">
-                        <el-input type="condPercent" v-model.number="form.condPercent" auto-complete="off" placeholder="请输入加价率(不超过1.0)"></el-input>
+                    <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
+                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
                     </el-form-item>
-                    <el-form-item label="加价金额(元):" :label-width="formLabelWidth" prop="condYuan" :rules="[{ required: true, message: '加价金额不能为空'},{ type: 'number', message: '加价金额必须为数字值'},]">
-                        <el-input v-model.number="form.condYuan" auto-complete="off" placeholder="请输入加价金额"></el-input>
+                    <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
+                        <el-select v-model="value1" placeholder="请选择" @change="handleChange1">
+                            <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
+                    <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
+                        <el-select v-model="value" placeholder="请选择" @change="handleChange">
+                            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <div>拥有的权限如下 : </div>
+                    <div> &nbsp; </div>
+                    <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -31,25 +43,21 @@
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column type="index" align=center label="编号" width="100">
             </el-table-column>
-            <el-table-column align=center prop="name" label="票型类别">
+            <el-table-column align=center prop="loginName" label="用户名">
             </el-table-column>
-            <el-table-column align=center prop="condPercent" label="加价率(%)">
+            <el-table-column align=center prop="name" label="姓名">
             </el-table-column>
-            <el-table-column align=center prop="condYuan" label="加价金额(元)">
+            <el-table-column align=center prop="department" label="部门">
+            </el-table-column>
+            <el-table-column align=center prop="role" label="角色">
             </el-table-column>
             <el-table-column align=center label="操作">
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
                         <el-form :model="form" ref="numberValidateFormEditUI">
-                            <el-form-item label="票型类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '票型类别不能为空'}]">
+                            <el-form-item label="分销商类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '分销商类别不能为空'}]">
                                 <el-input v-model="form.name" auto-complete="off" placeholder="请选择活动区域"></el-input>
-                            </el-form-item>
-                            <el-form-item label="加价率(%):" :label-width="formLabelWidth" prop="condPercent" :rules="[{ required: true, message: '加价率不能为空'},{ type: 'number',max: 1.0, message: '加价率必须为不大于1.0的数字值'},]">
-                                <el-input type="condPercent" v-model.number="form.condPercent" auto-complete="off" placeholder="请输入加价率(不超过1.0)"></el-input>
-                            </el-form-item>
-                            <el-form-item label="加价金额(元):" :label-width="formLabelWidth" prop="condYuan" :rules="[{ required: true, message: '加价金额不能为空'},{ type: 'number', message: '加价金额必须为数字值'},]">
-                                <el-input v-model.number="form.condYuan" auto-complete="off" placeholder="请输入加价金额"></el-input>
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
@@ -91,16 +99,34 @@ export default {
             editID: "",
             delID: "",
             form: {
+                loginName: '',
                 name: '',
-                condPercent: '',
-                condYuan: '',
+                department: '',
+                role: '',
+                id: '',
                 type: [],
             },
-            formLabelWidth: '110px',
+            formLabelWidth: '70px',
+            options1: [
+                {
+                    id: '',
+                    name: '',
+                }
+            ],
+            value1: '运营部',
+            options: [],
+            value: '普通管理员',
+            lists: {
+                remark: "",
+                id: '',
+            },
+            powerId: 1,
+            department: '运营部',
+            role: '普通管理员',
         };
     },
     components: {
-        Datasource, 
+        Datasource,
         // Paginations,
     },
     created() {
@@ -109,7 +135,7 @@ export default {
     methods: {
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/ticketType/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/staff/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -124,7 +150,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/ticketType/findPageData.action?pageIndex=" + `${val}`).then((res) => {
+            axios.get(common.apidomain + "/staff/findPageData.action?pageIndex=" + `${val}`).then((res) => {
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
@@ -133,6 +159,36 @@ export default {
             })
         },
         // 新增数据
+        handleChange1(value) {           //部门
+            axios.post(common.apidomain + "/staff/addUI.action").then((res) => {
+                // this.lists.remark = res.data.data.power[value].remark;
+                // console.log(res.data.data.power[value].id)
+                // console.log(res.data.data.dept[value - 29].name)
+                this.powerId = value
+                this.department = res.data.data.dept[value - 29].name;
+                // console.log(this.options1[value].name)
+            })
+        },
+        handleChange(value) {           //角色,权限联动
+            // console.log(value);
+            axios.post(common.apidomain + "/staff/addUI.action").then((res) => {
+                this.lists.remark = res.data.data.power[value].remark;
+                // console.log(res.data.data.power[value].id)
+                this.powerId = value
+                this.options = res.data.data.power;
+                this.role = this.options[value].name;
+            })
+        },
+        newAdd() {
+            axios.post(common.apidomain + "/staff/addUI.action").then((res) => {
+                // this.tableData = res.data.data;   //表格数据
+                // this.currentPage = this.pageCount;
+                // console.log(res.data.data.power)
+                this.options1 = res.data.data.dept;
+                this.options = res.data.data.power;
+                this.lists.remark = res.data.data.power[1].remark;
+            })
+        },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -153,16 +209,26 @@ export default {
                 }
             });
             // 提交表单数据
-            axios.post(common.apidomain + "/ticketType/add.action?name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan + "&pageIndex=" + this.pageCount).then((res) => {
+            // name,loginName,department,role,powerId,pageIndex
+            axios.post(common.apidomain + "/staff/add.action?powerId=" + this.powerId + "&loginName=" + this.form.loginName + "&name=" + this.form.name + "&department=" + this.department + "&role=" + this.role + "&pageIndex=" + this.pageCount).then((res) => {
                 this.tableData = res.data.data;   //表格数据
                 this.currentPage = this.pageCount;
                 // console.log(res.data.data)
-                // console.log(this.pageCount)
+                this.codesID = res.data.code;
+                // console.log(this.codesID)
+                if (this.codesID === 0) {    //级别已存在
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                    this.dialogFormVisible = false;
+                    this.getimgs();
+                    return;
+                }
             })
             this.getimgs();
+            this.form.loginName = "";
             this.form.name = "";
-            this.form.condPercent = "";
-            this.form.condYuan = ""
         },
         //修改数据
         editUI(index, row) {
@@ -191,7 +257,7 @@ export default {
                 }
             });
             // 提交修改的表单数据
-            axios.post(common.apidomain + "/ticketType/edit.action?id=" + this.editID + "&name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan).then((res) => {
+            axios.post(common.apidomain + "/customType/edit.action?id=" + this.editID + "&name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan).then((res) => {
                 this.getimgs();   //自动刷新当前页面
             })
         },
@@ -207,7 +273,14 @@ export default {
                     type: 'success',
                     message: '删除成功!',
                 });
-                axios.post(common.apidomain + "/ticketType/delete.action?id=" + this.delID).then((res) => {
+                axios.post(common.apidomain + "/staff/delete.action?id=" + this.delID).then((res) => {
+                    if (res.data.code === 0) {
+                        this.$message({
+                            message: '当前用户有管理的景区,无法删除,请联系系统管理员~',
+                            type: 'warning'
+                        });
+                        return false;
+                    }
                     this.getimgs();   //自动刷新当前页面
                 })
             }).catch(() => {
@@ -236,11 +309,6 @@ export default {
             });
         }
     },
-    computed: {
-
-    },
-    beforeMount() {
-    }
 }
 </script>
 
@@ -282,6 +350,13 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
+
+
+
+
+
+
 
 
 /* 分页组件层叠样式 */

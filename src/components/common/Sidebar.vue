@@ -11,10 +11,10 @@
                     </el-submenu>
                 </template>
                 <!-- <template v-else>
-                    <el-menu-item :index="item.index">
-                        <i :class="item.icon"></i>{{ item.title }}
-                    </el-menu-item>
-                </template> -->
+                            <el-menu-item :index="item.index">
+                                <i :class="item.icon"></i>{{ item.title }}
+                            </el-menu-item>
+                        </template> -->
                 <template v-else v-show="true">
                     <el-menu-item :index="item.index">
                         <i :class="item.icon"></i>{{ item.title }}
@@ -55,24 +55,9 @@ export default {
                     ]
                 },
                 {
-                    icon: 'el-icon-menu',
-                    index: '2',
-                    title: '表格',
-                    subs: [
-                        {
-                            index: 'basetable',
-                            title: '基础表格'
-                        },
-                        {
-                            index: 'vuetable',
-                            title: 'Vue表格组件'
-                        }
-                    ]
-                },
-                {
-                    icon: 'el-icon-date',
+                    icon: 'el-icon-message',
                     index: '4',
-                    title: '表单',
+                    title: '产品信息管理',
                     subs: [
                         {
                             index: 'baseform',
@@ -93,15 +78,36 @@ export default {
                     ]
                 },
                 {
+                    icon: 'el-icon-document',
+                    index: '5',
+                    title: '用户管理设置',
+                    subs: [
+                        {
+                            index: 'UserManagement',
+                            title: '用户管理'
+                        },
+                    ]
+                },
+                {
+                    icon: 'el-icon-menu',
+                    index: '2',
+                    title: '测试测试',
+                    subs: [
+                        {
+                            index: 'basetable',
+                            title: '基础表格'
+                        },
+                        {
+                            index: 'vuetable',
+                            title: 'Vue表格组件'
+                        }
+                    ]
+                },
+                {
                     icon: 'el-icon-star-on',
                     index: 'basecharts',
                     title: '图表'
                 },
-                {
-                    icon: 'el-icon-upload2',
-                    index: 'drag',
-                    title: '拖拽'
-                }
             ]
         }
     },

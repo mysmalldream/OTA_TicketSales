@@ -13,7 +13,7 @@
             <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
                 <el-form :model="form" ref="numberValidateForm">
                     <el-form-item label="分销商类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '分销商类别不能为空'}]">
-                        <el-input v-model="form.name" auto-complete="off" placeholder="请选择活动区域"></el-input>
+                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入分销商类别"></el-input>
                     </el-form-item>
                     <el-form-item label="加价率(%):" :label-width="formLabelWidth" prop="condPercent" :rules="[{ required: true, message: '加价率不能为空'},{ type: 'number',max: 1.0, message: '加价率必须为不大于1.0的数字值'},]">
                         <el-input type="condPercent" v-model.number="form.condPercent" auto-complete="off" placeholder="请输入加价率(不超过1.0)"></el-input>

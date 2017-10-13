@@ -19,18 +19,25 @@ export default new Router({
             require(["../components/page/Readme.vue"], resolve)
         },
         {
-            path: "/DistributorCategory",
-            component: resolve =>
-              require(["../components/page/DistributorCategory.vue"], resolve) //分销商类别设置
-          },{
-            path: "/TicketTypeSet",
-            component: resolve =>
-              require(["../components/page/TicketTypeSet.vue"], resolve) //票型类别设置
-          },{
-            path: "/PriorityClassSet",
-            component: resolve =>
-              require(["../components/page/PriorityClassSet.vue"], resolve) //优先级类别设置
-          },
+          path: "/DistributorCategory",
+          component: resolve =>
+            require(["../components/page/DistributorCategory.vue"], resolve) //分销商类别设置
+        },
+        {
+          path: "/TicketTypeSet",
+          component: resolve =>
+            require(["../components/page/TicketTypeSet.vue"], resolve) //票型类别设置
+        },
+        {
+          path: "/PriorityClassSet",
+          component: resolve =>
+            require(["../components/page/PriorityClassSet.vue"], resolve) //优先级类别设置
+        },
+        {
+          path: "/UserManagement",
+          component: resolve =>
+            require(["../components/page/UserManagement.vue"], resolve) // 用户管理
+        },
         {
           path: "/basetable",
           component: resolve =>
@@ -65,11 +72,6 @@ export default new Router({
           path: "/basecharts",
           component: resolve =>
             require(["../components/page/BaseCharts.vue"], resolve) // vue-schart组件
-        },
-        {
-          path: "/drag",
-          component: resolve =>
-            require(["../components/page/DragList.vue"], resolve) // 拖拽列表组件
         }
       ]
     },

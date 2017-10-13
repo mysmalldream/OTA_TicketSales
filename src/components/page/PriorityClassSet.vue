@@ -152,7 +152,10 @@ export default {
                 this.codesID = res.data.code;
                 // console.log(this.codesID)
                 if (this.codesID === 0) {    //级别已存在
-                    alert(res.data.msg)
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
                     this.dialogFormVisible = false;
                     this.getimgs();
                     return;
@@ -282,6 +285,7 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
 
 
 
