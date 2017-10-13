@@ -18,6 +18,7 @@
                     <el-form-item label="优先级:" :label-width="formLabelWidth" prop="priority" :rules="[{ required: true, message: '优先级不能为空'},{ type: 'number',min: 0, message: '优先级必须为不小于0的数字值'},]">
                         <el-input type="priority" v-model.number="form.priority" auto-complete="off" placeholder="0,1,2,3...,数值越小级别越高"></el-input>
                     </el-form-item>
+                    <el-tag type="success">优先级为0,1,2,3...的数字值,数值越小级别越高</el-tag>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -43,6 +44,7 @@
                             <el-form-item label="优先级:" :label-width="formLabelWidth" prop="priority" :rules="[{ required: true, message: '优先级不能为空'},{ type: 'number',min: 0, message: '优先级必须为不小于0的数字值'},]">
                                 <el-input type="priority" v-model.number="form.priority" auto-complete="off" placeholder="0,1,2,3...,数值越小级别越高"></el-input>
                             </el-form-item>
+                            <el-tag type="success">优先级为0,1,2,3...的数字值,数值越小级别越高</el-tag>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible1 = false">取 消</el-button>
@@ -169,7 +171,7 @@ export default {
         },
         //修改数据
         editUI(index, row) {
-            console.log(row.code)
+            // console.log(row.code)
             this.editID = row.id;
             this.code = row.id;
             this.form.name = row.name;
@@ -240,7 +242,6 @@ export default {
         }
     },
     computed: {
-
     },
     beforeMount() {
     }
@@ -285,6 +286,8 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
+
 
 
 

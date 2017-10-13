@@ -55,10 +55,28 @@
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
-                        <el-form :model="form" ref="numberValidateFormEditUI">
-                            <el-form-item label="分销商类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '分销商类别不能为空'}]">
-                                <el-input v-model="form.name" auto-complete="off" placeholder="请选择活动区域"></el-input>
+                        <el-form :model="form" ref="numberValidateForm">
+                            <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
+                                <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
                             </el-form-item>
+                            <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
+                                <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
+                            </el-form-item>
+                            <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
+                                <el-select v-model="value1" placeholder="请选择" @change="handleChange1" >
+                                    <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
+                                <el-select v-model="value" placeholder="请选择" @change="handleChange">
+                                    <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <div>拥有的权限如下 : </div>
+                            <div> &nbsp; </div>
+                            <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible1 = false">取 消</el-button>
@@ -107,12 +125,7 @@ export default {
                 type: [],
             },
             formLabelWidth: '70px',
-            options1: [
-                {
-                    id: '',
-                    name: '',
-                }
-            ],
+            options1: [],
             value1: '运营部',
             options: [],
             value: '普通管理员',
@@ -123,6 +136,7 @@ export default {
             powerId: 1,
             department: '运营部',
             role: '普通管理员',
+            ids: "",    //修改id
         };
     },
     components: {
@@ -166,7 +180,6 @@ export default {
                 // console.log(res.data.data.dept[value - 29].name)
                 this.powerId = value
                 this.department = res.data.data.dept[value - 29].name;
-                // console.log(this.options1[value].name)
             })
         },
         handleChange(value) {           //角色,权限联动
@@ -179,7 +192,7 @@ export default {
                 this.role = this.options[value].name;
             })
         },
-        newAdd() {
+        newAdd() {       //新增表单默认值设置
             axios.post(common.apidomain + "/staff/addUI.action").then((res) => {
                 // this.tableData = res.data.data;   //表格数据
                 // this.currentPage = this.pageCount;
@@ -213,9 +226,7 @@ export default {
             axios.post(common.apidomain + "/staff/add.action?powerId=" + this.powerId + "&loginName=" + this.form.loginName + "&name=" + this.form.name + "&department=" + this.department + "&role=" + this.role + "&pageIndex=" + this.pageCount).then((res) => {
                 this.tableData = res.data.data;   //表格数据
                 this.currentPage = this.pageCount;
-                // console.log(res.data.data)
                 this.codesID = res.data.code;
-                // console.log(this.codesID)
                 if (this.codesID === 0) {    //级别已存在
                     this.$message({
                         message: res.data.msg,
@@ -232,32 +243,51 @@ export default {
         },
         //修改数据
         editUI(index, row) {
-            // console.log(row.id)
+            this.ids = row.id;
+            axios.post(common.apidomain + "/staff/addUI.action").then((res) => {
+                // this.tableData = res.data.data;   //表格数据
+                // this.currentPage = this.pageCount;
+                // console.log(res.data.data.power)
+                this.options1 = res.data.data.dept;
+                this.options = res.data.data.power;
+                this.lists.remark = res.data.data.power[1].remark;
+            })   //  修改按钮表单显示的默认值
             this.editID = row.id;
+            this.form.loginName = row.loginName;
             this.form.name = row.name;
-            this.form.condPercent = row.condPercent;
-            this.form.condYuan = row.condYuan
+            this.value1 = row.department;
+            this.value = row.role;
+            // this.options = row.role;
+            // console.log(111)
+            // console.log(this.options1)
         },
         submitFormEditUI(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.$message({
-                        showClose: true,
-                        message: '修改成功',
-                        type: 'success'
-                    });
-                    this.dialogFormVisible1 = false;
-                } else {
-                    this.$message({
-                        showClose: true,
-                        message: '修改失败,请重试',
-                        type: 'warning'
-                    });
-                    return false;
-                }
+            // this.$refs[formName].validate((valid) => {
+            //     if (valid) {
+            //         this.$message({
+            //             showClose: true,
+            //             message: '修改成功',
+            //             type: 'success'
+            //         });
+            //         this.dialogFormVisible1 = false;
+            //     } else {
+            //         this.$message({
+            //             showClose: true,
+            //             message: '修改失败,请重试',
+            //             type: 'warning'
+            //         });
+            //         return false;
+            //     }
+            // });
+
+            this.$message({
+                showClose: true,
+                message: '修改成功',
+                type: 'success'
             });
+            this.dialogFormVisible1 = false;
             // 提交修改的表单数据
-            axios.post(common.apidomain + "/customType/edit.action?id=" + this.editID + "&name=" + this.form.name + "&condPercent=" + this.form.condPercent + "&condYuan=" + this.form.condYuan).then((res) => {
+            axios.post(common.apidomain + "/staff/edit.action?id=" + this.ids + "&powerId=" + this.powerId + "&loginName=" + this.form.loginName + "&name=" + this.form.name + "&department=" + this.department + "&role=" + this.role + "&pageIndex=" + this.pageCount).then((res) => {
                 this.getimgs();   //自动刷新当前页面
             })
         },
@@ -350,6 +380,9 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
+
+
 
 
 
