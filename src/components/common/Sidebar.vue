@@ -33,7 +33,7 @@ export default {
                 {
                     icon: 'el-icon-setting',
                     index: 'readme',
-                    title: '自述'
+                    title: '欢迎页'
                 },
                 {
                     icon: 'el-icon-date',
@@ -57,15 +57,15 @@ export default {
                 {
                     icon: 'el-icon-message',
                     index: '4',
-                    title: '产品信息管理',
+                    title: '景区管理设置',
                     subs: [
                         {
-                            index: 'baseform',
-                            title: '基本表单'
+                            index: 'SceneryManage',
+                            title: '景区管理'
                         },
                         {
                             index: 'vueeditor',
-                            title: '编辑器'
+                            title: '新增'
                         },
                         {
                             index: 'markdown',

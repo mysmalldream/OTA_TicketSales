@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/login"
+      redirect: "/login" //默认登录进去后显示欢迎页
     },
     {
       path: "/readme",
@@ -34,6 +34,11 @@ export default new Router({
             require(["../components/page/PriorityClassSet.vue"], resolve) //优先级类别设置
         },
         {
+          path: "/SceneryManage",
+          component: resolve =>
+            require(["../components/page/SceneryManage.vue"], resolve) //景区管理
+        },
+        {
           path: "/UserManagement",
           component: resolve =>
             require(["../components/page/UserManagement.vue"], resolve) // 用户管理
@@ -47,11 +52,6 @@ export default new Router({
           path: "/vuetable",
           component: resolve =>
             require(["../components/page/VueTable.vue"], resolve) // vue-datasource组件
-        },
-        {
-          path: "/baseform",
-          component: resolve =>
-            require(["../components/page/BaseForm.vue"], resolve)
         },
         {
           path: "/vueeditor",
