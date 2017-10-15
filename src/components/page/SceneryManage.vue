@@ -7,18 +7,42 @@
             </el-breadcrumb>
         </div>
         <div class="form-box">
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="表单名称">
+            <el-form ref="form" :inline="true" :model="form" label-width="80px">
+                <el-form-item label="景区编号">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="选择器">
+                <el-form-item label="景区业务">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="景区名称">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="景区等级">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="景区分类">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="所属省市">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="逻辑符">
                     <el-select v-model="form.region" placeholder="请选择">
-                        <el-option key="bbk" label="步步高" value="bbk"></el-option>
-                        <el-option key="xtc" label="小天才" value="xtc"></el-option>
-                        <el-option key="imoo" label="imoo" value="imoo"></el-option>
+                        <el-option key="bbk" label="=" value="bbk"></el-option>
+                        <el-option key="xtc" label=">" value="xtc"></el-option>
+                        <el-option key="imoo1" label="<" value="imoo1"></el-option>
+                        <el-option key="imoo2" label="<=" value="imoo2"></el-option>
+                        <el-option key="imoo3" label="=>" value="imoo3"></el-option>
+                        <el-option key="imoo4" label="<>" value="imoo4"></el-option>
+                        <el-option key="imoo5" label="模糊查找" value="imoo5"></el-option>
+                        <el-option key="imoo6" label="模糊排除" value="imoo6"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="日期时间">
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">查 询</el-button>
+                    <el-button>重 置</el-button>
+                </el-form-item>
+                <!-- <el-form-item label="日期时间">
                     <el-col :span="11">
                         <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
                     </el-col>
@@ -50,7 +74,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">提交</el-button>
                     <el-button>取消</el-button>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
         </div>
 
@@ -75,8 +99,13 @@
         },
         methods: {
             onSubmit() {
-                this.$message.success('提交成功！');
+                this.$message.success('开始查询');
             }
         }
     }
 </script>
+<style scoped>
+    .form-box{
+        width:865px;
+    }
+</style>
