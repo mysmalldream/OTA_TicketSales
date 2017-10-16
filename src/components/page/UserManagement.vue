@@ -111,7 +111,7 @@ export default {
             tableData: [],            //当前表格数据
             currentPage: 1,           //当前页码数
             pageCount: "",            //总的页码数
-            loading: true,
+            loading: false,
             dialogFormVisible: false,   //新增
             dialogFormVisible1: false,  //修改
             editID: "",
@@ -380,15 +380,6 @@ a {
     background: #0E90D2;
     color: #fff;
 }
-
-
-
-
-
-
-
-
-
 
 
 

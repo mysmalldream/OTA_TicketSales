@@ -64,7 +64,7 @@ export default {
                             title: '景区管理'
                         },
                         {
-                            index: 'vueeditor',
+                            index: 'ScenerynewAdd',
                             title: '新增'
                         },
                         {
@@ -106,7 +106,7 @@ export default {
                 {
                     icon: 'el-icon-star-on',
                     index: 'basecharts',
-                    title: '图表'
+                    title: '统计'
                 },
             ]
         }
