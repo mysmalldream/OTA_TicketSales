@@ -35,14 +35,14 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="逻辑符号" prop="logic">
-                    <el-select v-model="form.logic" placeholder="请选择">
-                        <el-option key="bbk" label="=" value="bbk"></el-option>
-                        <el-option key="xtc" label=">" value="xtc"></el-option>
-                        <el-option key="imoo1" label="<" value="imoo1"></el-option>
-                        <el-option key="imoo2" label="<=" value="imoo2"></el-option>
-                        <el-option key="imoo3" label="=>" value="imoo3"></el-option>
-                        <el-option key="imoo4" label="<>" value="imoo4"></el-option>
-                        <el-option key="imoo5" label="模糊查找" value="imoo5"></el-option>
+                    <el-select v-model="form.logic" placeholder="请选择"  @change="handleChange1">
+                        <el-option key="0" label="=" value="0"></el-option>
+                        <el-option key="1" label=">" value="1"></el-option>
+                        <el-option key="2" label="<" value="2"></el-option>
+                        <el-option key="3" label="<=" value="3"></el-option>
+                        <el-option key="4" label="=>" value="4"></el-option>
+                        <el-option key="5" label="<>" value="5"></el-option>
+                        <el-option key="6" label="模糊查找" value="6"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -53,11 +53,9 @@
         </div>
         <div class="plugins-tips">
             <el-button icon="edit" type="primary" @click="newAdd()">新 增</el-button>
-            <el-button icon="check" type="success">导出为Excel</el-button>
+            <el-button icon="check" type="success" @click="handleDownload()">导出为Excel</el-button>
         </div>
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
-            <!-- <el-table-column type="index" align=center label="编号" width="100">
-                    </el-table-column> -->
             <el-table-column align=center prop="id" label="景区编号">
             </el-table-column>
             <el-table-column align=center prop="name" label="景区名称">
@@ -66,7 +64,7 @@
             </el-table-column>
             <el-table-column align=center prop="viewType" label="景区分类">
             </el-table-column>
-            <el-table-column align=center prop="number" label="所景产品数量">
+            <el-table-column align=center prop="number" label="景区产品数量">
             </el-table-column>
             <el-table-column align=center prop="sort" label="景区排序">
             </el-table-column>
@@ -79,28 +77,28 @@
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
                         <!-- <el-form :model="form" ref="numberValidateForm">
-                                    <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
-                                        <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
-                                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
-                                        <el-select v-model="value1" placeholder="请选择" @change="handleChange1" >
-                                            <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
-                                        <el-select v-model="value" placeholder="请选择" @change="handleChange">
-                                            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <div>拥有的权限如下 : </div>
-                                    <div> &nbsp; </div>
-                                    <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
-                                </el-form> -->
+                                                    <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
+                                                        <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
+                                                    </el-form-item>
+                                                    <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
+                                                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
+                                                    </el-form-item>
+                                                    <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
+                                                        <el-select v-model="value1" placeholder="请选择" @change="handleChange1" >
+                                                            <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </el-form-item>
+                                                    <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
+                                                        <el-select v-model="value" placeholder="请选择" @change="handleChange">
+                                                            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </el-form-item>
+                                                    <div>拥有的权限如下 : </div>
+                                                    <div> &nbsp; </div>
+                                                    <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
+                                                </el-form> -->
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible1 = false">取 消</el-button>
                             <el-button type="primary" @click="submitFormEditUI('numberValidateFormEditUI')">提 交</el-button>
@@ -163,12 +161,41 @@ export default {
         this.getimgs();
     },
     methods: {
-        onSubmit() {
-            this.$message.success('开始查询');
+        //查询数据
+         handleChange1(value) {   //logic
+            this.form.logic = value;
         },
-        resetForm(formName) {
+        onSubmit() {
+            this.$message.success('查询成功~~');
+            // console.log(this.$route.path)
+            console.log(this.form)
+             axios.get(common.apidomain + "/view/findPageData.action?viewId"+this.form.viewId+'&staffName='+this.form.staffName+'&viewName='+this.form.viewName+'&level='+this.form.level+'&viewType='+this.form.viewType+'&province='+this.form.province+'&city='+this.form.city+'&logic='+this.form.logic).then((res) => {
+                console.log(res.data);
+                // this.tableData = res.data.data.datas;   //表格数据
+                // this.total = res.data.data.allCount;    //条数
+                // this.pageCount = res.data.data.pageCount;   //总的页码数
+                // this.pagingNowNumberList = res.data.data.currPage;   //当前页码数
+                // this.loading = false;
+            })
+        },
+        resetForm(formName) {    //重置
             this.$refs[formName].resetFields();
         },
+        handleDownload() {    //导出为Excel
+            console.log(12324)
+            // let vm = this;
+            // require.ensure([], () => {
+            //     const { export_json_to_excel } = require('../../vendor/Export2Excel');
+            //     const tHeader = ['景区编号', '景区名称', '景区等级', '景区分类', '景区产品数量', '景区排序', '营业时间', '景区业务人员'];
+            //     const filterVal = ['viewId', 'staffName', 'viewName', 'level', 'viewType', 'province', 'city', 'logic',];
+            //     const list = this.tableData;
+            //     const data = this.formatJson(filterVal, list);
+            //     export_json_to_excel(tHeader, data, '列表excel');
+            // })
+        },
+        // formatJson(filterVal, jsonData) {
+        //     return jsonData.map(v => filterVal.map(j => v[j]))
+        // },
         getAddress() {
             axios.get(common.apidomain + "/view/addUI.action").then((res) => {
                 // console.log(res.data);
@@ -179,7 +206,7 @@ export default {
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
@@ -298,6 +325,10 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
+
+
+
 
 
 

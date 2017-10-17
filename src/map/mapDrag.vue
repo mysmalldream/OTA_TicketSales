@@ -49,7 +49,7 @@ export default {
     // 搜索
     handleSearch () {
       if (this.searchKey) {
-        this.placeSearch.search(this.searchKey)
+        this.placeSearch.search(this.searchKey);
       }
     },
     // 实例化地图
