@@ -108,7 +108,7 @@ export default {
     },
     data: function() {
         return {
-            fileList2: [{ name: 'food.jpeg', url:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpegimageMogr2/thumbnail/360x360/format/webp/quality/100' }],
+            fileList2: [{ name: 'food.jpeg', url:'http://imgsrc.baidu.com/imgad/pic/item/3801213fb80e7beca9004ec5252eb9389b506b38.jpg' }],
             currentPage: 1,           //当前页码数
             dragData: {   //地图
                 lng: null,

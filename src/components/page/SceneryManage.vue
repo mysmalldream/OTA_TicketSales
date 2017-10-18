@@ -10,7 +10,18 @@
         <div class="form-box">
             <el-form ref="form" :inline="true" :model="form" label-width="90px">
                 <el-form-item label="景区编号" prop="viewId">
-                    <el-input v-model="form.viewId"></el-input>
+                    <el-input v-model="form.viewId" placeholder="请同时选择相应的逻辑符号"></el-input>
+                </el-form-item>
+                <el-form-item label="逻辑符号" prop="logic">
+                    <el-select v-model="form.logic" placeholder="请选择" @change="handleChange1">
+                        <el-option key="0" label=">" value="0"></el-option>
+                        <el-option key="1" label="<" value="1"></el-option>
+                        <el-option key="2" label="=" value="2"></el-option>
+                        <el-option key="3" label=">=" value="3"></el-option>
+                        <el-option key="4" label="<=" value="4"></el-option>
+                        <el-option key="5" label="<>" value="5"></el-option>
+                        <el-option key="6" label="模糊查找" value="6"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="景区负责人" prop="staffName">
                     <el-input v-model="form.staffName"></el-input>
@@ -19,10 +30,14 @@
                     <el-input v-model="form.viewName"></el-input>
                 </el-form-item>
                 <el-form-item label="景区等级" prop="level">
-                    <el-input v-model="form.level"></el-input>
+                    <el-select v-model="form.level" placeholder="请选择景区等级">
+                        <el-option v-for="item in level" :key="item.id" :label="item.id" :value="item"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="景区分类" prop="viewType">
-                    <el-input v-model="form.viewType"></el-input>
+                    <el-select v-model="form.viewType" placeholder="请选择景区分类">
+                        <el-option v-for="item in viewType" :key="item.id" :label="item.id" :value="item"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="所属省份" prop="province">
                     <el-select v-model="form.province" placeholder="请选择所属省份">
@@ -32,17 +47,6 @@
                 <el-form-item label="所属城市" prop="city">
                     <el-select v-model="form.city" placeholder="请选择所属城市">
                         <el-option v-for="item in viewCity" :key="item.id" :label="item.name" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="逻辑符号" prop="logic">
-                    <el-select v-model="form.logic" placeholder="请选择"  @change="handleChange1">
-                        <el-option key="0" label="=" value="0"></el-option>
-                        <el-option key="1" label=">" value="1"></el-option>
-                        <el-option key="2" label="<" value="2"></el-option>
-                        <el-option key="3" label="<=" value="3"></el-option>
-                        <el-option key="4" label="=>" value="4"></el-option>
-                        <el-option key="5" label="<>" value="5"></el-option>
-                        <el-option key="6" label="模糊查找" value="6"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -70,35 +74,35 @@
             </el-table-column>
             <el-table-column align=center prop="businessTime" label="营业时间">
             </el-table-column>
-            <el-table-column align=center prop="staffName" label="景区业务人员">
+            <el-table-column align=center prop="staffName" label="景区负责人">
             </el-table-column>
             <el-table-column align=center label="操作">
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
                         <!-- <el-form :model="form" ref="numberValidateForm">
-                                                    <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
-                                                        <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
-                                                    </el-form-item>
-                                                    <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
-                                                        <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
-                                                    </el-form-item>
-                                                    <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
-                                                        <el-select v-model="value1" placeholder="请选择" @change="handleChange1" >
-                                                            <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
-                                                            </el-option>
-                                                        </el-select>
-                                                    </el-form-item>
-                                                    <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
-                                                        <el-select v-model="value" placeholder="请选择" @change="handleChange">
-                                                            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
-                                                            </el-option>
-                                                        </el-select>
-                                                    </el-form-item>
-                                                    <div>拥有的权限如下 : </div>
-                                                    <div> &nbsp; </div>
-                                                    <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
-                                                </el-form> -->
+                                                                        <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
+                                                                            <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
+                                                                        </el-form-item>
+                                                                        <el-form-item label="姓名:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
+                                                                            <el-input v-model="form.name" auto-complete="off" placeholder="请输入姓名"></el-input>
+                                                                        </el-form-item>
+                                                                        <el-form-item label="部门:" :label-width="formLabelWidth" prop="department">
+                                                                            <el-select v-model="value1" placeholder="请选择" @change="handleChange1" >
+                                                                                <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id">
+                                                                                </el-option>
+                                                                            </el-select>
+                                                                        </el-form-item>
+                                                                        <el-form-item label="角色:" :label-width="formLabelWidth" prop="role">
+                                                                            <el-select v-model="value" placeholder="请选择" @change="handleChange">
+                                                                                <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
+                                                                                </el-option>
+                                                                            </el-select>
+                                                                        </el-form-item>
+                                                                        <div>拥有的权限如下 : </div>
+                                                                        <div> &nbsp; </div>
+                                                                        <el-button :plain="true" type="success" v-text="lists.remark"></el-button>
+                                                                    </el-form> -->
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible1 = false">取 消</el-button>
                             <el-button type="primary" @click="submitFormEditUI('numberValidateFormEditUI')">提 交</el-button>
@@ -133,6 +137,8 @@ export default {
                 city: '',
                 logic: ''
             },
+            level: [],
+            viewType: [],
             viewProvince: [],
             viewCity: [],
             total: 1,
@@ -162,43 +168,50 @@ export default {
     },
     methods: {
         //查询数据
-         handleChange1(value) {   //logic
+        handleChange1(value) {   //logic
             this.form.logic = value;
         },
         onSubmit() {
-            this.$message.success('查询成功~~');
             // console.log(this.$route.path)
-            console.log(this.form)
-             axios.get(common.apidomain + "/view/findPageData.action?viewId"+this.form.viewId+'&staffName='+this.form.staffName+'&viewName='+this.form.viewName+'&level='+this.form.level+'&viewType='+this.form.viewType+'&province='+this.form.province+'&city='+this.form.city+'&logic='+this.form.logic).then((res) => {
-                console.log(res.data);
-                // this.tableData = res.data.data.datas;   //表格数据
-                // this.total = res.data.data.allCount;    //条数
-                // this.pageCount = res.data.data.pageCount;   //总的页码数
-                // this.pagingNowNumberList = res.data.data.currPage;   //当前页码数
-                // this.loading = false;
+            axios.get(common.apidomain + "/view/findPageData.action?viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+                // console.log(res.data);
+                if (res.data.code == 0) {
+                    this.$message({
+                        message: '暂未查询到数据,请重新查询~', type: 'warning'
+                    });
+                    return false;
+                } {
+                    this.$message.success('查询成功~~');
+                    this.tableData = res.data.data.datas;   //表格数据
+                    this.total = res.data.data.allCount;    //条数
+                    this.pageCount = res.data.data.pageCount;   //总的页码数
+                    this.pagingNowNumberList = res.data.data.currPage;   //当前页码数
+                    this.loading = false;
+                }
             })
         },
         resetForm(formName) {    //重置
             this.$refs[formName].resetFields();
         },
         handleDownload() {    //导出为Excel
-            console.log(12324)
-            // let vm = this;
-            // require.ensure([], () => {
-            //     const { export_json_to_excel } = require('../../vendor/Export2Excel');
-            //     const tHeader = ['景区编号', '景区名称', '景区等级', '景区分类', '景区产品数量', '景区排序', '营业时间', '景区业务人员'];
-            //     const filterVal = ['viewId', 'staffName', 'viewName', 'level', 'viewType', 'province', 'city', 'logic',];
-            //     const list = this.tableData;
-            //     const data = this.formatJson(filterVal, list);
-            //     export_json_to_excel(tHeader, data, '列表excel');
-            // })
+            let vm = this;
+            require.ensure([], () => {
+                const { export_json_to_excel } = require('../../vendor/Export2Excel');
+                const tHeader = ['景区编号', '景区名称', '景区等级', '景区分类', '景区产品数量', '景区排序', '营业时间', '景区业务人员'];
+                const filterVal = ['id', 'name', 'level', 'viewType', 'number', 'sort', 'businessTime', 'staffName',];
+                const list = this.tableData;
+                const data = this.formatJson(filterVal, list);
+                export_json_to_excel(tHeader, data, '未命名列表excel');
+            })
         },
-        // formatJson(filterVal, jsonData) {
-        //     return jsonData.map(v => filterVal.map(j => v[j]))
-        // },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => v[j]))
+        },
         getAddress() {
             axios.get(common.apidomain + "/view/addUI.action").then((res) => {
                 // console.log(res.data);
+                this.level = res.data.data.viewLevel;    //等级
+                this.viewType = res.data.data.viewType;    //分类
                 this.viewProvince = res.data.data.viewProvince;    //省份
                 this.viewCity = res.data.data.viewCity;    //城市
             })
@@ -220,7 +233,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + `${val}`).then((res) => {
+            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + `${val}` + "&viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -325,6 +338,11 @@ a {
     background: #0E90D2;
     color: #fff;
 }
+
+
+
+
+
 
 
 
