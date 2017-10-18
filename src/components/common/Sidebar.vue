@@ -67,14 +67,33 @@ export default {
                             index: 'ScenerynewAdd',
                             title: '新增'
                         },
+                        // {
+                        //     index: 'SceneryEdit',
+                        //     title: '修改'
+                        // },
+                        // {
+                        //     index: 'markdown',
+                        //     title: 'markdown'
+                        // },
+                        // {
+                        //     index: 'upload',
+                        //     title: '文件上传'
+                        // }
+                    ]
+                },
+                {
+                    icon: 'el-icon-time',
+                    index: '6',
+                    title: '产品信息管理设置',
+                    subs: [
                         {
-                            index: 'markdown',
-                            title: 'markdown'
+                            index: 'ProductManage',
+                            title: '产品信息管理'
                         },
-                        {
-                            index: 'upload',
-                            title: '文件上传'
-                        }
+                        // {
+                        //     index: 'ScenerynewAdd',
+                        //     title: '新增'
+                        // },
                     ]
                 },
                 {

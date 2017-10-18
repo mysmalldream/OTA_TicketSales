@@ -3,8 +3,8 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-message"></i> 景区管理设置</el-breadcrumb-item>
-                <el-breadcrumb-item>景区管理</el-breadcrumb-item>
+                    <i class="el-icon-time"></i> 产品信息管理设置</el-breadcrumb-item>
+                <el-breadcrumb-item>产品信息管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="form-box">
@@ -60,21 +60,21 @@
             <el-button icon="check" type="success" @click="handleDownload()">导出为Excel</el-button>
         </div>
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
-            <el-table-column align=center prop="id" label="景区编号">
+            <el-table-column align=center prop="id" label="产品编号">
             </el-table-column>
-            <el-table-column align=center prop="name" label="景区名称">
+            <el-table-column align=center prop="name" label="票名">
             </el-table-column>
-            <el-table-column align=center prop="level" label="景区等级">
+            <el-table-column align=center prop="level" label="所属景区">
             </el-table-column>
-            <el-table-column align=center prop="viewType" label="景区分类">
+            <el-table-column align=center prop="viewType" label="供应商">
             </el-table-column>
-            <el-table-column align=center prop="number" label="景区产品数量">
+            <el-table-column align=center prop="number" label="结算价">
             </el-table-column>
-            <el-table-column align=center prop="sort" label="景区排序">
+            <el-table-column align=center prop="sort" label="门市价">
             </el-table-column>
-            <el-table-column align=center prop="businessTime" label="营业时间">
+            <el-table-column align=center prop="businessTime" label="优先级分类">
             </el-table-column>
-            <el-table-column align=center prop="staffName" label="景区负责人">
+            <el-table-column align=center prop="staffName" label="是否销售">
             </el-table-column>
             <el-table-column align=center label="操作">
                 <template scope="scope">
@@ -173,7 +173,7 @@ export default {
             let vm = this;
             require.ensure([], () => {
                 const { export_json_to_excel } = require('../../vendor/Export2Excel');
-                const tHeader = ['景区编号', '景区名称', '景区等级', '景区分类', '景区产品数量', '景区排序', '营业时间', '景区业务人员'];
+                const tHeader = ['产品编号', '票名', '所属景区', '供应商', '结算价', '门市价', '优先级分类', '是否销售'];
                 const filterVal = ['id', 'name', 'level', 'viewType', 'number', 'sort', 'businessTime', 'staffName',];
                 const list = this.tableData;
                 const data = this.formatJson(filterVal, list);
@@ -194,7 +194,7 @@ export default {
         },
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

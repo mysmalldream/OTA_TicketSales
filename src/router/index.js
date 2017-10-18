@@ -41,6 +41,14 @@ export default new Router({
           path: "/ScenerynewAdd",
           component: resolve =>
             require(["../components/page/ScenerynewAdd.vue"], resolve) //景区管理新增
+        },{
+          path: "/SceneryEdit",
+          component: resolve =>
+            require(["../components/page/SceneryEdit.vue"], resolve) //景区管理修改
+        },{
+          path: "/ProductManage",
+          component: resolve =>
+            require(["../components/page/ProductManage.vue"], resolve) //产品信息管理
         },
         {
           path: "/UserManagement",

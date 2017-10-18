@@ -4,11 +4,14 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
                     <i class="el-icon-message"></i> 景区管理设置</el-breadcrumb-item>
-                <el-breadcrumb-item>新增</el-breadcrumb-item>
+                <el-breadcrumb-item>修改</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="form-box">
             <el-form ref="form" :model="form" label-width="90px">
+                <el-form-item label="景区编号" prop="id" :rules="[{ required: true, message: '景区编号不能为空'}]">
+                    <el-input v-model="form.id" :disabled="true"></el-input>
+                </el-form-item>
                 <el-form-item label="景区名称" prop="name" :rules="[{ required: true, message: '景区名称不能为空'}]">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
@@ -63,9 +66,9 @@
                     <el-input type="textarea" v-model="form.selfRoute"></el-input>
                 </el-form-item>
                 <el-form-item label="上传照片" prop="file">
-                    <!-- <el-input type="file" multiple="multiple" v-model="form.file"></el-input> -->
+                    <!-- <el-input type="file" multiple="multiple" v-model="form.file"></el-input> multiple='true'  -->
                     <!-- <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="+"></image-uploader> -->
-                    <el-upload class="upload-demo" multiple='true' list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
+                    <el-upload class="upload-demo"  list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
                         <el-button size="small" type="primary">点击上传</el-button>&nbsp;&nbsp;<span slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
                     </el-upload>
                 </el-form-item>
@@ -97,6 +100,8 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 import axios from 'axios';
 import common from '../../kits/commonapi.js';   //公共域名文件
 import mapDrag from '../common/mapDrag'  // "vue-loader": "^11.3.4",
@@ -108,6 +113,7 @@ export default {
     },
     data: function() {
         return {
+            val:'',
             fileList2: [{ name: 'food.jpeg', url:'http://imgsrc.baidu.com/imgad/pic/item/3801213fb80e7beca9004ec5252eb9389b506b38.jpg' }],
             currentPage: 1,           //当前页码数
             dragData: {   //地图
@@ -118,6 +124,7 @@ export default {
             form: {
                 lng:'',
                 lat:'',
+                id:'',
                 name: '',
                 type: '',
                 level: '',
@@ -137,6 +144,9 @@ export default {
                 city: '',
                 sort: ''
             },
+            id:[],
+            staffId: '',
+            staffName: '',
             viewType: [],
             viewLevel: [],
             staff: [],
@@ -148,6 +158,7 @@ export default {
     },
     created() {
         this.getAddress();
+        this.getEdit();
     },
     methods: {
         dragMap(data) {   //地图
@@ -186,17 +197,40 @@ export default {
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-        getAddress() {
-            axios.get(common.apidomain + "/view/addUI.action").then((res) => {
-                // console.log(res.data);
+        getEdit(){    //编辑下拉回显
+             axios.get(common.apidomain + "/view/addUI.action").then((res) => {
                 this.viewType = res.data.data.viewType;    //景区分类
                 this.viewLevel = res.data.data.viewLevel;    //景区等级
                 this.staff = res.data.data.staff;           //业务人员
-                this.province = res.data.data.viewProvince;    //省份
-                this.city = res.data.data.viewCity;           //城市
+                this.province = res.data.data.viewProvince;    //业务人员
+                this.city = res.data.data.viewCity;           //业务人员
             })
         },
-        //新增数据
+        getAddress() {
+            axios.get(common.apidomain + "/view/editUI.action?id="+this.$route.query.id).then((res) => {
+                this.form.id=res.data.data.id;
+                this.form.name=res.data.data.name;
+                this.form.remark=res.data.data.remark;
+                this.form.address=res.data.data.address;
+                this.form.businessTime=res.data.data.businessTime;
+                this.form.phone=res.data.data.phone;
+                this.form.reminder=res.data.data.reminder;
+                this.form.discount=res.data.data.discount;
+                this.form.busMessage=res.data.data.busMessage;
+                this.form.selfRoute=res.data.data.selfRoute;
+                this.form.lng=res.data.data.lng;
+                this.form.lat=res.data.data.lat;
+                this.form.sort=res.data.data.sort;
+                this.staffId=res.data.data.staffId;
+                this.staffName=res.data.data.staffName;
+                this.form.type = res.data.data.type;    //景区分类
+                this.form.level = res.data.data.level;    //景区等级
+                this.form.staff = res.data.data.staffName;    //业务人员
+                this.form.province = res.data.data.province;    //省份
+                this.form.city = res.data.data.city;            //城市
+            })
+        },
+        //修改数据
         handleChange1(value) {
             // console.log(value)
             this.form.type = value;
@@ -214,7 +248,7 @@ export default {
         handleChange5(value) {           //业务人员
             this.form.city = value;
         },
-        //新增
+        //修改数据提交
         onSubmit(formName) {
             console.log(1111)
             console.log(this.files)
@@ -224,25 +258,25 @@ export default {
             // console.log(this.form)
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
-                        // console.log(res.data)
+                    axios.post(common.apidomain + "/view/edit.action?id=" +this.form.id +  "&name="+this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.staffId + "&staffName=" + this.staffName + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.form.lng + "&lat=" + this.form.lat).then((res) => {
+                        console.log(res.data)
                         // console.log(res.data.data.currPage)
                         // this.tableData = res.data.data;   //表格数据
-                        this.currentPage = res.data.data.currPage;
+                        // this.currentPage = res.data.data.currPage;
                         this.codesID = res.data.code;
                         if (this.codesID === 0) {    //参数错误
                             this.$message({
-                                message: "参数错误,请重试~",
+                                message: "修改失败,请重试~",
                                 type: 'warning'
                             });
-                            this.getimgs();
+                            // this.getimgs();
                             return;
                         } else {
                             this.$message({
-                                message: '添加成功!,请点击最后一页查看新增数据~~',
+                                message: '修改成功!~~',
                                 type: 'success'
                             });
-                            this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
+                            this.$router.push({ path: '/SceneryManage' });
                         }
                     })
                 } else {
