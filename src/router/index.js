@@ -49,11 +49,29 @@ export default new Router({
           path: "/ProductManage",
           component: resolve =>
             require(["../components/page/ProductManage.vue"], resolve) //产品信息管理
+        },{
+          path: "/ProductnewAdd",
+          component: resolve =>
+            require(["../components/page/ProductnewAdd.vue"], resolve) //产品信息新增
         },
         {
           path: "/UserManagement",
           component: resolve =>
             require(["../components/page/UserManagement.vue"], resolve) // 用户管理
+        },
+        {
+          path: "/DistributorManagement",
+          component: resolve =>
+            require(["../components/page/DistributorManagement.vue"], resolve) // 分销商管理
+        },{
+          path: "/Examine",
+          component: resolve =>
+            require(["../components/page/Examine.vue"], resolve) // 审核
+        },
+        {
+          path: "/ContractManage",
+          component: resolve =>
+            require(["../components/page/ContractManage.vue"], resolve) // 合同管理
         },
         {
           path: "/basetable",

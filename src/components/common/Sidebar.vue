@@ -11,10 +11,10 @@
                     </el-submenu>
                 </template>
                 <!-- <template v-else>
-                            <el-menu-item :index="item.index">
-                                <i :class="item.icon"></i>{{ item.title }}
-                            </el-menu-item>
-                        </template> -->
+                                    <el-menu-item :index="item.index">
+                                        <i :class="item.icon"></i>{{ item.title }}
+                                    </el-menu-item>
+                                </template> -->
                 <template v-else v-show="true">
                     <el-menu-item :index="item.index">
                         <i :class="item.icon"></i>{{ item.title }}
@@ -83,22 +83,22 @@ export default {
                 },
                 {
                     icon: 'el-icon-time',
-                    index: '6',
+                    index: '5',
                     title: '产品信息管理设置',
                     subs: [
                         {
                             index: 'ProductManage',
                             title: '产品信息管理'
                         },
-                        // {
-                        //     index: 'ScenerynewAdd',
-                        //     title: '新增'
-                        // },
+                        {
+                            index: 'ProductnewAdd',
+                            title: '新增'
+                        },
                     ]
                 },
                 {
                     icon: 'el-icon-document',
-                    index: '5',
+                    index: '6',
                     title: '用户管理设置',
                     subs: [
                         {
@@ -106,25 +106,42 @@ export default {
                             title: '用户管理'
                         },
                     ]
-                },
-                {
-                    icon: 'el-icon-menu',
-                    index: '2',
-                    title: '测试测试',
+                }, {
+                    icon: 'el-icon-share',
+                    index: '7',
+                    title: '分销商管理设置',
                     subs: [
                         {
-                            index: 'basetable',
-                            title: '基础表格'
+                            index: 'DistributorManagement',
+                            title: '分销商管理'
+                        }, {
+                            index: 'Examine',
+                            title: '审核'
+                        }, {
+                            index: 'ContractManage',
+                            title: '合同管理'
                         },
-                        {
-                            index: 'vuetable',
-                            title: 'Vue表格组件'
-                        }
                     ]
                 },
+                // {
+                //     icon: 'el-icon-menu',
+                //     index: '2',
+                //     title: '测试测试',
+                //     subs: [
+                //         {
+                //             index: 'basetable',
+                //             title: '基础表格'
+                //         },
+                //         {
+                //             index: 'vuetable',
+                //             title: 'Vue表格组件'
+                //         }
+                //     ]
+                // },
                 {
                     icon: 'el-icon-star-on',
-                    index: 'basecharts',
+                    // index: 'basecharts',
+                    index: '',
                     title: '统计'
                 },
             ]
