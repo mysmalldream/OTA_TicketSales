@@ -258,7 +258,7 @@ export default {
             // console.log(this.form)
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post(common.apidomain + "/view/edit.action?id=" +this.form.id +  "&name="+this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.staffId + "&staffName=" + this.staffName + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.form.lng + "&lat=" + this.form.lat).then((res) => {
+                    axios.post(common.apidomain + "/view/edit.action?id=" +this.form.id +  "&name="+this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staffId + "&staffName=" + this.form.staffName + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.form.lng + "&lat=" + this.form.lat).then((res) => {
                         console.log(res.data)
                         // console.log(res.data.data.currPage)
                         // this.tableData = res.data.data;   //表格数据

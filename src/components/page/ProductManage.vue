@@ -9,8 +9,8 @@
         </div>
         <div class="form-box">
             <el-form ref="form" :inline="true" :model="form" label-width="90px">
-                <el-form-item label="景区编号" prop="viewId">
-                    <el-input v-model="form.viewId" placeholder="请同时选择相应的逻辑符号"></el-input>
+                <el-form-item label="产品编号" prop="id">
+                    <el-input v-model="form.id" placeholder="请同时选择相应的逻辑符号"></el-input>
                 </el-form-item>
                 <el-form-item label="逻辑符号" prop="logic">
                     <el-select v-model="form.logic" placeholder="请选择" @change="handleChange1">
@@ -23,32 +23,30 @@
                         <el-option key="6" label="模糊查找" value="6"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="景区负责人" prop="staffName">
-                    <el-input v-model="form.staffName"></el-input>
+                <el-form-item label="产品名称" prop="name">
+                    <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="景区名称" prop="viewName">
+                <el-form-item label="所属景区" prop="viewName">
                     <el-input v-model="form.viewName"></el-input>
                 </el-form-item>
-                <el-form-item label="景区等级" prop="level">
-                    <el-select v-model="form.level" placeholder="请选择景区等级">
-                        <el-option v-for="item in level" :key="item.id" :label="item.id" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="景区分类" prop="viewType">
-                    <el-select v-model="form.viewType" placeholder="请选择景区分类">
+                <el-form-item label="景区类别" prop="viewType">
+                    <el-select v-model="form.viewType" placeholder="请选择景区类别">
                         <el-option v-for="item in viewType" :key="item.id" :label="item.id" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属省份" prop="province">
-                    <el-select v-model="form.province" placeholder="请选择所属省份">
-                        <el-option v-for="item in viewProvince" :key="item.id" :label="item.id" :value="item"></el-option>
+                <el-form-item label="票型" prop="ticketType">
+                    <el-select v-model="form.ticketType" placeholder="请选择票型">
+                        <el-option v-for="item in ticketType" :key="item.id" :label="item.id" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属城市" prop="city">
+                <el-form-item label="结算价" prop="endPrice">
+                     <el-input v-model="form.endPrice"></el-input>
+                </el-form-item>
+                <!-- <el-form-item label="所属城市" prop="city">
                     <el-select v-model="form.city" placeholder="请选择所属城市">
                         <el-option v-for="item in viewCity" :key="item.id" :label="item.name" :value="item"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item>
                     <el-button icon="search" type="info" @click="onSubmit">查 询</el-button>
                     <el-button icon="delete" @click="resetForm('form')">重 置</el-button>
@@ -104,19 +102,16 @@ export default {
     data: function() {
         return {
             form: {
-                viewId: '',
-                staffName: '',
+                id: '',
+                logic: '',
+                name: '',
                 viewName: '',
-                level: '',
                 viewType: '',
-                province: '',
-                city: '',
-                logic: ''
+                ticketType: '',
+                endPrice: '',
             },
-            level: [],
             viewType: [],
-            viewProvince: [],
-            viewCity: [],
+            ticketType: [],
             total: 1,
             pagingNowNumberList: 1,   //当前显示页码数据
             tableData: [],            //当前表格数据
@@ -148,8 +143,8 @@ export default {
             this.form.logic = value;
         },
         onSubmit() {
-            // console.log(this.$route.path)
-            axios.get(common.apidomain + "/view/findPageData.action?viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+            // console.log(this.form)
+            axios.get(common.apidomain + "/product/findPageData.action?id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice  + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
@@ -184,12 +179,10 @@ export default {
             return jsonData.map(v => filterVal.map(j => v[j]))
         },
         getAddress() {
-            axios.get(common.apidomain + "/view/addUI.action").then((res) => {
+            axios.get(common.apidomain + "/product/addUI.action").then((res) => {
                 // console.log(res.data);
-                this.level = res.data.data.viewLevel;    //等级
-                this.viewType = res.data.data.viewType;    //分类
-                this.viewProvince = res.data.data.viewProvince;    //省份
-                this.viewCity = res.data.data.viewCity;    //城市
+                this.viewType = res.data.data.viewType;    //景区类别
+                this.ticketType = res.data.data.ticketType;    //票型
             })
         },
         //数据的初次加载
@@ -209,7 +202,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + `${val}` + "&viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic).then((res) => {
+            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + `${val}` + "&id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName  + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice + '&logic=' + this.form.logic).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -235,7 +228,7 @@ export default {
                     type: 'success',
                     message: '删除成功!',
                 });
-                axios.post(common.apidomain + "/view/delete.action?id=" + this.delID).then((res) => {
+                axios.post(common.apidomain + "/product/delete.action?id=" + this.delID).then((res) => {
                     if (res.data.code === 0) {
                         this.$message({
                             message: '当前用户有管理的景区,无法删除,请联系系统管理员~',
