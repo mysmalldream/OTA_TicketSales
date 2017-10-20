@@ -157,8 +157,8 @@ export default {
         }
     },
     created() {
-        this.getAddress();
         this.getEdit();
+        this.getAddress();
     },
     methods: {
         dragMap(data) {   //地图

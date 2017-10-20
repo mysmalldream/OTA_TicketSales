@@ -49,7 +49,7 @@ import Vue from "vue";
 
 import axios from 'axios';
 import common from '../../kits/commonapi.js';   //公共域名文件
-            // let ids = []
+            // var str='';
 
 export default {
     data: function() {
@@ -62,11 +62,9 @@ export default {
             loading: false,
             formLabelWidth: '70px',
             powerId: 1,
-            department: '运营部',
-            role: '普通管理员',
-            ids: "",    //修改id
             multipleSelection: [],
-            indexs:[]
+            indexs:[],
+            strs:''                //被选中元素id组成的集合
         }
     },
     created() {
@@ -101,23 +99,27 @@ export default {
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
-            let ids = []
+            let ids = [];
             this.multipleSelection.map((item) => {
                 ids.push(item.id)
             })
             this.indexs=ids
-            console.log(ids)
-            return ids;
         },
         check(){
-            console.log("审核通过"+this.indexs)
+            var str='';
+            str += this.indexs;
+            this.strs=str
+            console.log(this.strs)
             
-            //  axios.post(common.apidomain + "/custom/check.action?pageIndex=" + `${val}`).then((res) => {
-            //     console.log(res.data.data);
-            // })
+             axios.post(common.apidomain + "/custom/check.action?id=" + this.strs).then((res) => {
+                console.log(res.data.data);
+            })
         },
         checkNotPass(){
-
+            var str='';
+            str += this.indexs;
+            this.strs=str
+            console.log(this.strs)   
         },
     }
 }

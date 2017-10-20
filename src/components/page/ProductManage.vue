@@ -42,11 +42,6 @@
                 <el-form-item label="结算价" prop="endPrice">
                      <el-input v-model="form.endPrice"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="所属城市" prop="city">
-                    <el-select v-model="form.city" placeholder="请选择所属城市">
-                        <el-option v-for="item in viewCity" :key="item.id" :label="item.name" :value="item"></el-option>
-                    </el-select>
-                </el-form-item> -->
                 <el-form-item>
                     <el-button icon="search" type="info" @click="onSubmit">查 询</el-button>
                     <el-button icon="delete" @click="resetForm('form')">重 置</el-button>
@@ -62,21 +57,21 @@
             </el-table-column>
             <el-table-column align=center prop="name" label="票名">
             </el-table-column>
-            <el-table-column align=center prop="level" label="所属景区">
+            <el-table-column align=center prop="viewName" label="所属景区">
             </el-table-column>
-            <el-table-column align=center prop="viewType" label="供应商">
+            <el-table-column align=center prop="supplierName" label="供应商">
             </el-table-column>
-            <el-table-column align=center prop="number" label="结算价">
+            <el-table-column align=center prop="endPrice" label="结算价">
             </el-table-column>
-            <el-table-column align=center prop="sort" label="门市价">
+            <el-table-column align=center prop="marketPrice" label="门市价">
             </el-table-column>
-            <el-table-column align=center prop="businessTime" label="优先级分类">
+            <el-table-column align=center prop="priorityType" label="优先级分类">
             </el-table-column>
-            <el-table-column align=center prop="staffName" label="是否销售">
+            <el-table-column align=center prop="isSale" label="是否销售">
             </el-table-column>
             <el-table-column align=center label="操作">
                 <template scope="scope">
-                    <router-link :to="{path:'/SceneryEdit',query: { id: scope.row.id }}">
+                    <router-link :to="{path:'/ProductEdit',query: { id: scope.row.id }}">
                         <el-button type="success" size="small">修 改</el-button>
                     </router-link>
                     <el-button type="danger" size="small" @click="del(),delUI(scope.$index, scope.row)">删 除</el-button>
@@ -169,7 +164,7 @@ export default {
             require.ensure([], () => {
                 const { export_json_to_excel } = require('../../vendor/Export2Excel');
                 const tHeader = ['产品编号', '票名', '所属景区', '供应商', '结算价', '门市价', '优先级分类', '是否销售'];
-                const filterVal = ['id', 'name', 'level', 'viewType', 'number', 'sort', 'businessTime', 'staffName',];
+                const filterVal = ['id', 'name', 'viewName', 'supplierName', 'endPrice', 'marketPrice', 'priorityType', 'isSale',];
                 const list = this.tableData;
                 const data = this.formatJson(filterVal, list);
                 export_json_to_excel(tHeader, data, '未命名列表excel');

@@ -37,22 +37,31 @@ export default new Router({
           path: "/SceneryManage",
           component: resolve =>
             require(["../components/page/SceneryManage.vue"], resolve) //景区管理
-        },{
+        },
+        {
           path: "/ScenerynewAdd",
           component: resolve =>
             require(["../components/page/ScenerynewAdd.vue"], resolve) //景区管理新增
-        },{
+        },
+        {
           path: "/SceneryEdit",
           component: resolve =>
             require(["../components/page/SceneryEdit.vue"], resolve) //景区管理修改
-        },{
+        },
+        {
           path: "/ProductManage",
           component: resolve =>
             require(["../components/page/ProductManage.vue"], resolve) //产品信息管理
-        },{
+        },
+        {
           path: "/ProductnewAdd",
           component: resolve =>
             require(["../components/page/ProductnewAdd.vue"], resolve) //产品信息新增
+        },
+        {
+          path: "/ProductEdit",
+          component: resolve =>
+            require(["../components/page/ProductEdit.vue"], resolve) //产品信息修改
         },
         {
           path: "/UserManagement",
@@ -63,7 +72,13 @@ export default new Router({
           path: "/DistributorManagement",
           component: resolve =>
             require(["../components/page/DistributorManagement.vue"], resolve) // 分销商管理
-        },{
+        },
+        {
+          path: "/DistributorEdit",
+          component: resolve =>
+            require(["../components/page/DistributorEdit.vue"], resolve) // 分销商修改
+        },
+        {
           path: "/Examine",
           component: resolve =>
             require(["../components/page/Examine.vue"], resolve) // 审核

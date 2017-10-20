@@ -195,7 +195,7 @@ export default {
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
-                // console.log(res.data.data);
+                // console.log(res.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
