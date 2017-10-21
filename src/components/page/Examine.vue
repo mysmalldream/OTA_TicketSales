@@ -110,16 +110,36 @@ export default {
             str += this.indexs;
             this.strs=str
             console.log(this.strs)
-            
-             axios.post(common.apidomain + "/custom/check.action?id=" + this.strs).then((res) => {
-                console.log(res.data.data);
+             axios.post(common.apidomain + "/custom/check.action?idString=" + this.strs).then((res) => {
+                // console.log(res.data);
+                if (res.data.code == 0) {
+                    this.$message({
+                        message: '审核通过修改失败,请重试', type: 'warning'
+                    });
+                    return false;
+                } {
+                    this.$message.success('审核通过状态,修改成功~~');
+                    this.getimgs();
+                }
             })
         },
         checkNotPass(){
             var str='';
             str += this.indexs;
             this.strs=str
-            console.log(this.strs)   
+            console.log(this.strs)
+            axios.post(common.apidomain + "/custom/checkNotPass.action?idString=" + this.strs).then((res) => {
+                console.log(res.data);
+                if (res.data.code == 0) {
+                    this.$message({
+                        message: '审核通过修改失败,请重试', type: 'warning'
+                    });
+                    return false;
+                } {
+                    this.$message.success('审核不通过状态,修改成功~~');
+                    this.getimgs();
+                }
+            })   
         },
     }
 }

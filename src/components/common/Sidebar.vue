@@ -122,6 +122,23 @@ export default {
                             title: '合同管理'
                         },
                     ]
+                },{
+                    icon: 'el-icon-menu',
+                    index: '8',
+                    title: '订单管理设置',
+                    subs: [
+                        {
+                            index: 'OrderManagement',
+                            title: '订单管理'
+                        },
+                         {
+                            index: 'OrderPayment',
+                            title: '未支付订单'
+                        }, {
+                            index: 'OrderOff',
+                            title: '已核销订单'
+                        },
+                    ]
                 },
                 // {
                 //     icon: 'el-icon-menu',

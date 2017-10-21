@@ -89,6 +89,21 @@ export default new Router({
             require(["../components/page/ContractManage.vue"], resolve) // 合同管理
         },
         {
+          path: "/OrderManagement",
+          component: resolve =>
+            require(["../components/page/OrderManagement.vue"], resolve) // 订单管理
+        },
+        {
+          path: "/OrderPayment",
+          component: resolve =>
+            require(["../components/page/OrderPayment.vue"], resolve) // 未支付订单
+        },
+        {
+          path: "/OrderOff",
+          component: resolve =>
+            require(["../components/page/OrderOff.vue"], resolve) // 已核销订单
+        },
+        {
           path: "/basetable",
           component: resolve =>
             require(["../components/page/BaseTable.vue"], resolve)
