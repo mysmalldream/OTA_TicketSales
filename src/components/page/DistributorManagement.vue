@@ -34,8 +34,8 @@
                         <el-option v-for="item in customType" :key="item.id" :label="item.name" :value="item.name"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="分销商等级" prop="level ">
-                    <el-select v-model="form.level" placeholder="请选择分销商等级">
+                <el-form-item label="分销商等级" prop="level">
+                    <el-select v-model="form.level" placeholder="请选择分销商等级" @change="handleChange2">
                         <el-option v-for="item in level" :key="item.id" :label="item.id" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
@@ -105,6 +105,7 @@ export default {
             },
             customType: [],
             level: [],
+            numbers:'',
             total: 1,
             pagingNowNumberList: 1,   //当前显示页码数据
             tableData: [],            //当前表格数据
@@ -135,10 +136,16 @@ export default {
         handleChange1(value) {   //logic
             this.form.logic = value;
         },
+        handleChange2(val){
+          this.numbers=val;
+            console.log(this.numbers)
+      },
         onSubmit() {
-            // console.log(this.form)
-            axios.get(common.apidomain + "/custom/findPageData.action?id=" + this.form.id + '&name=' + this.form.name + '&linkName=' + this.form.linkName + '&custType=' + this.form.custType + '&level=' + this.form.level  + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
-                // console.log(res.data);
+            console.log(this.form)
+            console.log(this.form.level)
+            // console.log(this.pagingNowNumberList)
+            axios.get(common.apidomain + "/custom/findPageData.action?id=" + this.form.id + '&name=' + this.form.name + '&linkName=' + this.form.linkName + '&custType=' + this.form.custType + '&level=' + this.numbers  + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+                console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
@@ -190,12 +197,13 @@ export default {
             })
         },
         handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+            // console.log(`每页 ${val} 条`);
             this.pagingNowNumberList = `${val}`;
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/custom/findPageData.action?pageIndex=" + `${val}` + "&id=" + this.form.id + '&name=' + this.form.name + '&linkName=' + this.form.linkName + '&custType=' + this.form.custType + '&level=' + this.form.level +  + '&logic=' + this.form.logic).then((res) => {
+            // console.log(this.form.level)
+            axios.get(common.apidomain + "/custom/findPageData.action?pageIndex=" + `${val}` + "&id=" + this.form.id + '&name=' + this.form.name + '&linkName=' + this.form.linkName + '&custType=' + this.form.custType + '&level=' + this.form.level + '&logic=' + this.form.logic).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

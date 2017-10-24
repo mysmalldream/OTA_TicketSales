@@ -8,31 +8,26 @@
             </el-breadcrumb>
         </div>
         <div class="form-box">
-            <el-form ref="form"  :model="form" label-width="100px">
+            <el-form ref="form"  :model="form" label-width="100px" enctype="multipart/form-data">
                 <el-form-item label="分销商名称" prop="name">
                     <el-select v-model="form.name" placeholder="请选择" @change="handleChange1">
-                        <el-option v-for="item in names" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                        <el-option v-for="item in names" :key="item.id" :label="item.name" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="分销商名称" prop="name">
-                    <el-select v-model="form.name" placeholder="请选择"  @change="handleChange2" :disabled="true">
-                        <el-option  v-for="item in names" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <span v-for="item in names" :key="item.id">{{item.urlName}}<el-button icon="delete"  @click="deletes">删 除</el-button></span>
-                <el-button icon="delete"  @click="deletes">删 除</el-button>
-                <!-- <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :file-list="fileList">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload> -->
+                <el-upload class="upload-demo"  accept=".doc,.docx,.txt,.pdf" ref="upload"
+                :action=urls :data="upLoadDatas"
+                :on-preview="handlePreview"  :on-success="handleSuccess":on-error="handlEerror"
+                :file-list="fileList" :auto-upload="false" :show-file-list="true">
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                 <el-form-item>
-                    <el-button icon="upload" type="info" @click="onSubmit">上 传</el-button>
+                <el-button style="margin-left: 10px;" icon="upload" size="small" type="success" @click="submitUpload">开始上传</el-button>
                 </el-form-item>
+                <div slot="tip" class="el-upload__tip">只能上传.doc,.docx,.txt,.pdf格式的文件</div>
+                </el-upload>
+                <div v-for="item in strs" :key="item.id" class="listsitem">{{item}} 
+                    <el-button  size="small" @click="del(item)" >删除</el-button>
+                    <!-- <el-button  size="small" @click="down(item)" type="success">下载</el-button> -->
+                </div>
             </el-form>
         </div>
     </div>
@@ -44,61 +39,109 @@ import Vue from "vue";
 import axios from "axios";
 import common from "../../kits/commonapi.js"; //公共域名文件
 
-export default {
+export default {    
   data: function() {
     return {
+        urls:common.apidomain+"/custom/contractUpload.action",   //上传文件地址
+       upLoadDatas: {
+            id: '', 
+            url: '' 
+        },
        form:{
-           name:''
+           name:'',
+           id:'',
+           file:''
        },
        names:[],
+       id:'',
+       url:'',
        urlName:[],
-       fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, ]
+       fileList: [],
+       importFileUrl:'',
+       upLoadData:'',
+       strs:[],
+       names:{
+           name:'',
+           url:''
+        },
+        dels:{
+            id:'',
+            url:''
+        }
     };
   },
   created() {
       this.getimgs()
   },
   methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+       submitUpload() {
+        this.$refs.upload.submit();
+        this.upLoadDatas.url=null; 
+      },
+      del(item){
+          console.log("删除按钮显示的")
+          console.log(this.dels)
+          console.log("fileName==="+item)
+          console.log(this.dels.id)
+          console.log(this.dels.url)
+        axios.get(common.apidomain + "/custom/delURL.action?id="+this.dels.id+'&fileName='+item+'&url='+this.dels.url).then((res) => {
+                // console.log(res.data);
+                this.strs = res.data.data[1];    //更新strs
+                this.dels.url=res.data.data[0];
+            })
       },
       handlePreview(file) {
-        console.log(file);
+        // console.log("已上传文件的钩子");       
+        // console.log(file);       
+        this.fileList.name=file.name;
+        this.fileList=file.response;
+      },
+      handleSuccess(response, file, fileList) {
+        // console.log("上传成功钩子");
+        // console.log(fileList[0].response.data.url);
+        this.strs=[];
+        fileList[0].response.data.url.split(",").forEach(function(v,i) {
+              this.strs.push(v);
+        }, this);
+        this.$message({showClose: true,message: '恭喜你，上传成功!',type: 'success'});
+      },
+      handlEerror(err, file, fileList) {
+        this.$message({showClose: true,message: '上传失败,请重试~',type: 'error'});
       },
       handleChange1(val){
-          console.log(val)
-        //   axios.get(common.apidomain + "/custom/contractUI.action").then((res) => {
-        //         console.log(res.data.data);
-        //         // console.log(res.data.name);
-        //         this.names = res.data.data;    //分销商名称
-        //     })
-      },
-      handleChange2(val){
-          console.log(val)
-        //   axios.get(common.apidomain + "/custom/contractUI.action").then((res) => {
-        //         console.log(res.data.data);
-        //         // console.log(res.data.name);
-        //         this.names = res.data.data;    //分销商名称
-        //     })
+        //   console.log("下拉选择显示的")
+        //   console.log(val.id)
+        //   console.log(val.url)
+          this.dels.id=val.id;
+          this.dels.url=val.url;
+          this.upLoadDatas.id=val.id;
+          this.upLoadDatas.url=val.url;
+          this.strs=[];
+          if(val.urlList==null){
+              return;
+          }else{
+              val.urlList.forEach(function(v,i) {
+              this.strs.push(v);
+        }, this);
+          }
       },
       getimgs(){
           axios.get(common.apidomain + "/custom/contractUI.action").then((res) => {
-                // console.log(res.data.data);
-                // console.log(res.data.name);
+                // console.log(res.data.data   );
                 this.names = res.data.data;    //分销商名称
             })
       },
-      onSubmit(){
-
-      },
-      deletes(){
-
-      }
   }
 };
 </script>
 <style scoped>
 .form-box {
-  width: 50%;
+  width: 25%;
+}
+.el-upload--text {
+    height: 10px;
+}
+.listsitem{
+    margin-top: 10px;
 }
 </style>

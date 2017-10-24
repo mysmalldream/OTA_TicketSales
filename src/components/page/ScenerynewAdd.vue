@@ -65,7 +65,7 @@
                 <el-form-item label="上传照片" prop="file">
                     <!-- <el-input type="file" multiple="multiple" v-model="form.file"></el-input> -->
                     <!-- <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="+"></image-uploader> -->
-                    <el-upload class="upload-demo" multiple='true' list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
+                    <el-upload class="upload-demo" :multiple='true' list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
                         <el-button size="small" type="primary">点击上传</el-button>&nbsp;&nbsp;<span slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
                     </el-upload>
                 </el-form-item>

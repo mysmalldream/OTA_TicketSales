@@ -9,8 +9,8 @@
         </div>
         <div class="form-box">
             <el-form ref="form" :inline="true" :model="form" label-width="100px">
-                <el-form-item label="起始日期" prop="satrtTime">
-                    <el-input type="date" v-model="form.satrtTime"></el-input>
+                <el-form-item label="起始日期" prop="startTime">
+                    <el-input type="date" v-model="form.startTime"></el-input>
                 </el-form-item>
                 <el-form-item label="结束日期" prop="endTime">
                     <el-input type="date" v-model="form.endTime" ></el-input>
@@ -29,25 +29,25 @@
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column align=center prop="id" label="序号">
             </el-table-column>
-            <el-table-column align=center prop="name" label="订单号">
+            <el-table-column align=center prop="orderId" label="订单号">
             </el-table-column>
-            <el-table-column align=center prop="typeName" label="产品名称">
+            <el-table-column align=center prop="productName" label="产品名称">
             </el-table-column>
-            <el-table-column align=center prop="level" label="分销商">
+            <el-table-column align=center prop="custName" label="分销商">
             </el-table-column>
-            <el-table-column align=center prop="phone" label="供应商">
+            <el-table-column align=center prop="supplier" label="供应商">
             </el-table-column>
-            <el-table-column align=center prop="linkMan" label="所属景区">
+            <el-table-column align=center prop="view" label="所属景区">
             </el-table-column>
-            <el-table-column align=center prop="creditLimit" label="支付方式">
+            <el-table-column align=center prop="ispay" label="支付方式">
             </el-table-column>
-            <el-table-column align=center prop="cashMoney" label="订单状态">
+            <el-table-column align=center prop="orderState" label="订单状态">
             </el-table-column>
-            <el-table-column align=center prop="state" label="数量">
+            <el-table-column align=center prop="orderNumber" label="数量">
             </el-table-column>
-            <el-table-column align=center prop="state" label="单价">
+            <el-table-column align=center prop="unitPrice" label="单价">
             </el-table-column>
-            <el-table-column align=center prop="state" label="金额">
+            <el-table-column align=center prop="price" label="金额">
             </el-table-column>
             <!-- <el-table-column align=center label="操作">
                 <template scope="scope">
@@ -77,10 +77,10 @@ export default {
     data: function() {
         return {
             form: {
-                satrtTime: '',
+                startTime: '',
                 endTime: '',
             },
-            state: 2,
+            state: 1,
             total:1,
             pagingNowNumberList: 1,   //当前显示页码数据
             tableData: [],            //当前表格数据
@@ -105,9 +105,9 @@ export default {
             this.form.logic = value;
         },
         onSubmit() {
-            console.log(this.form)
-            console.log(this.state)
-            axios.get(common.apidomain + "/order/stateOerder.action?satrtTime=" + this.form.satrtTime + '&endTime=' + this.form.endTime + '&state=' + this.state  + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+            // console.log(this.form)
+            // console.log(this.state)
+            axios.get(common.apidomain + "/order/stateOerder.action?startTime=" + this.form.startTime + '&endTime=' + this.form.endTime +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id")) + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
@@ -150,8 +150,8 @@ export default {
         },
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/order/stateOerder.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
-                // console.log(res.data.data);
+            axios.get(common.apidomain + "/order/stateOerder.action?pageIndex=" + this.pagingNowNumberList+"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+                // console.log(res.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
@@ -165,7 +165,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/custom/findPageData.action?pageIndex=" + `${val}` + "&satrtTime=" + this.form.satrtTime + '&endTime=' + this.form.endTime + '&state=' + this.state).then((res) => {
+            axios.get(common.apidomain + "/order/stateOerder.action?pageIndex=" + `${val}` + "&startTime=" + this.form.startTime + '&endTime=' + this.form.endTime +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

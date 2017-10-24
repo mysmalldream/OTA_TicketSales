@@ -139,7 +139,7 @@ export default {
         },
         onSubmit() {
             // console.log(this.form)
-            axios.get(common.apidomain + "/product/findPageData.action?id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice  + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/product/findPageData.action?id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice  + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
@@ -182,7 +182,7 @@ export default {
         },
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -197,7 +197,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + `${val}` + "&id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName  + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice + '&logic=' + this.form.logic).then((res) => {
+            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + `${val}` + "&id=" + this.form.id + '&name=' + this.form.name + '&viewName=' + this.form.viewName  + '&viewType=' + this.form.viewType + '&ticketType=' + this.form.ticketType + '&endPrice=' + this.form.endPrice + '&logic=' + this.form.logic+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

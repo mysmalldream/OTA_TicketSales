@@ -42,25 +42,25 @@
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column align=center prop="id" label="序号">
             </el-table-column>
-            <el-table-column align=center prop="name" label="订单号">
+            <el-table-column align=center prop="orderId" label="订单号">
             </el-table-column>
-            <el-table-column align=center prop="typeName" label="产品名称">
+            <el-table-column align=center prop="productName" label="产品名称">
             </el-table-column>
-            <el-table-column align=center prop="level" label="分销商">
+            <el-table-column align=center prop="custName" label="分销商">
             </el-table-column>
-            <el-table-column align=center prop="phone" label="供应商">
+            <el-table-column align=center prop="supplier" label="供应商">
             </el-table-column>
-            <el-table-column align=center prop="linkMan" label="所属景区">
+            <el-table-column align=center prop="view" label="所属景区">
             </el-table-column>
-            <el-table-column align=center prop="creditLimit" label="支付方式">
+            <el-table-column align=center prop="ispay" label="支付方式">
             </el-table-column>
-            <el-table-column align=center prop="cashMoney" label="订单状态">
+            <el-table-column align=center prop="orderState" label="订单状态">
             </el-table-column>
-            <el-table-column align=center prop="state" label="数量">
+            <el-table-column align=center prop="orderNumber" label="数量">
             </el-table-column>
-            <el-table-column align=center prop="state" label="单价">
+            <el-table-column align=center prop="unitPrice" label="单价">
             </el-table-column>
-            <el-table-column align=center prop="state" label="金额">
+            <el-table-column align=center prop="price" label="金额">
             </el-table-column>
             <!-- <el-table-column align=center label="操作">
                 <template scope="scope">
@@ -139,8 +139,8 @@ export default {
         onSubmit() {
             console.log(this.form)
             console.log(this.statess)
-            axios.get(common.apidomain + "/order/findPageData.action?orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier  + '&state=' + this.statess + '&pageIndex=' + this.pagingNowNumberList+"&power_id=0"+"&staff_id=3").then((res) => {
-                // console.log(res.data);
+            axios.get(common.apidomain + "/order/findPageData.action?orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier  + '&state=' + this.statess + '&pageIndex=' + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+                console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
@@ -182,7 +182,7 @@ export default {
         // },
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + this.pagingNowNumberList +"&power_id=0"+"&staff_id=3").then((res) => {
+            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + this.pagingNowNumberList +"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 console.log(res.data);
                 // if (res.data.code == 0) {
                 //     this.$message({
@@ -206,7 +206,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + `${val}`+"&power_id=0"+"&staff_id=3" + "&orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier+ '&state=' + this.statess  ).then((res) => {
+            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + `${val}` + "&orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier+ '&state=' + this.statess+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

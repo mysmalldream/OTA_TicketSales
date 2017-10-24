@@ -149,7 +149,7 @@ export default {
         },
         onSubmit() {
             // console.log(this.$route.path)
-            axios.get(common.apidomain + "/view/findPageData.action?viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/view/findPageData.action?viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic + '&pageIndex=' + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
@@ -194,7 +194,9 @@ export default {
         },
         //数据的初次加载
         getimgs() {
-            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
+            console.log(JSON.parse(window.sessionStorage.getItem("id")))    //3
+            console.log(JSON.parse(window.sessionStorage.getItem("powerId")))  //0
+            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
@@ -209,7 +211,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + `${val}` + "&viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic).then((res) => {
+            axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + `${val}` + "&viewId=" + this.form.viewId + '&staffName=' + this.form.staffName + '&viewName=' + this.form.viewName + '&level=' + this.form.level + '&viewType=' + this.form.viewType + '&province=' + this.form.province + '&city=' + this.form.city + '&logic=' + this.form.logic+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

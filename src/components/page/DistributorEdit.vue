@@ -16,12 +16,12 @@
                     <el-input v-model="form.name" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="分销商类别" prop="custType" :rules="[{ required: true, message: '景区分类不能为空'}]">
-                    <el-select v-model="form.custType" placeholder="请选择" @change="handleChange1">
+                    <el-select v-model="form.custType1" placeholder="请重新选择" @change="handleChange1">
                         <el-option v-for="item in custType" :key="item.id" :label="item.name" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="分销商等级" prop="level" :rules="[{ required: true, message: '景区等级不能为空'}]">
-                    <el-select v-model="form.level" placeholder="请选择" @change="handleChange2">
+                    <el-select v-model="form.level1" placeholder="请重新选择" @change="handleChange2">
                         <el-option v-for="item in level" :key="item.id" :label="item.name" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
@@ -35,7 +35,7 @@
                     <el-input v-model="form.userName" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="分销商状态" prop="state" >
-                    <el-select v-model="form.stateName" placeholder="请选择" @change="handleChange3">
+                    <el-select v-model="form.stateName1" placeholder="请重新选择" @change="handleChange3">
                         <el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
@@ -72,13 +72,13 @@ export default {
             form: {
                 id:'',
                 name: '',
-                custType: '',
-                level: '',
+                custType1: '',
+                level1: '',
                 phone: '',
                 linkMan: '',
                 userName: '',
                 state: '0',
-                stateName:'',
+                stateName1:'',
                 creditLimit: '',
                 cashMoney: '',
             },
