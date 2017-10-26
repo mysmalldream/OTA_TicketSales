@@ -42,7 +42,7 @@ import common from "../../kits/commonapi.js"; //公共域名文件
 export default {    
   data: function() {
     return {
-        urls:common.apidomain+"/custom/contractUpload.action",   //上传文件地址
+        urls:common.apidomain+"/custom/contractUpload.action",   //上传合同文件地址
        upLoadDatas: {
             id: '', 
             url: '' 

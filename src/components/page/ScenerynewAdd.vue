@@ -8,7 +8,7 @@
             </el-breadcrumb>
         </div>
         <div class="form-box">
-            <el-form ref="form" :model="form" label-width="90px">
+            <el-form ref="form" :model="form" label-width="90px" enctype="multipart/form-data"  method="post" >
                 <el-form-item label="景区名称" prop="name" :rules="[{ required: true, message: '景区名称不能为空'}]">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
@@ -63,11 +63,22 @@
                     <el-input type="textarea" v-model="form.selfRoute"></el-input>
                 </el-form-item>
                 <el-form-item label="上传照片" prop="file">
-                    <!-- <el-input type="file" multiple="multiple" v-model="form.file"></el-input> -->
-                    <!-- <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="+"></image-uploader> -->
-                    <el-upload class="upload-demo" :multiple='true' list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
-                        <el-button size="small" type="primary">点击上传</el-button>&nbsp;&nbsp;<span slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                    <!-- :http-request="haha" -->
+                    
+                    <el-upload class="upload-demo"  accept=".jpg,.png,.jpeg,.gif,.bmp" ref="upload"  multiple
+                    :action=urls :data="form"     type="drag" :thumbnail-mode="false"  name="file"
+                    :on-preview="handlePreview"  :on-success="handleSuccess" :on-error="handlEerror" :on-change="handlChange" :before-upload="handlBefore"   
+                    :file-list="fileList" :auto-upload="false" list-type="picture-card">
+                    <el-button slot="trigger" size="small" type="primary">选取图片文件</el-button>
+                    <el-form-item>
+                    <!-- <el-button style="margin-left: 10px;" icon="upload" size="small" type="success" @click="submitUpload">开始上传</el-button> -->
+                    </el-form-item>
+                    <div slot="tip" class="el-upload__tip">只能上传.jpg,.png,.jpeg,.gif,.bmp格式的文件</div>
                     </el-upload>
+                    <el-dialog v-model="dialogVisible" size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                    
                 </el-form-item>
                 <el-form-item label="业务人员" prop="staff" :rules="[{ required: true, message: '业务人员不能为空'}]">
                     <el-select v-model="form.staff" placeholder="请选择" @change="handleChange3">
@@ -85,10 +96,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="景区排序" prop="sort" :rules="[{ required: true, message: '景区排序不能为空'},{ type: 'number',min:0, message: '景区排序必须为不小于0数字值'}]">
-                    <el-input v-model.number="form.sort" placeholder="优先级为0,1,2,3...的数字值,数值越小级别越高"></el-input>
+                    <el-input  v-model.number="form.sort" placeholder="优先级为0,1,2,3...的数字值,数值越小级别越高"></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="viewId">
-                    <el-button type="primary" @click="onSubmit('form')">提 交</el-button>
+                    <!-- <el-button type="primary" @click="onSubmit('form')">提 交</el-button> -->
+                    <!-- <el-button style="margin-left: 10px;"   type="primary" @click="submitUpload,onSubmit('form')">提 交</el-button> -->
+                    <el-button style="margin-left: 10px;"    type="primary" @click="submitUpload">提 交</el-button>
+                    <!-- <el-input style="margin-left: 10px;"   type="submit" value="提交"  @click="submitUpload">提 交</el-input> -->
                     <el-button @click="resetForm('form')">重 置</el-button>
                 </el-form-item>
             </el-form>
@@ -100,17 +114,23 @@
 import axios from 'axios';
 import common from '../../kits/commonapi.js';   //公共域名文件
 import mapDrag from '../common/mapDrag'  // "vue-loader": "^11.3.4",
-import ImageUploader from '../upImgs/ImageUploader'  // 上传图片组件
+
+
 
 export default {
     components: {    //地图
-        mapDrag, ImageUploader
+        mapDrag
     },
     data: function() {
         return {
-            fileList2: [{ name: 'food.jpeg', url:'http://imgsrc.baidu.com/imgad/pic/item/3801213fb80e7beca9004ec5252eb9389b506b38.jpg' }],
+            dialogImageUrl: '',
+            dialogVisible: false,
+            // urls:"http://192.168.1.200:8080/interface/view/add.action",   //上传图片文件地址
+            urls:common.apidomain+"/view/add.action",   //上传图片文件地址
+            // fileList: [{ name: '图片11.jpeg', url:'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            fileList: [],
             currentPage: 1,           //当前页码数
-            dragData: {   //地图
+            dragData: {               //地图
                 lng: null,
                 lat: null,
                 address: null,
@@ -135,7 +155,10 @@ export default {
                 staffName: '',
                 province: '',
                 city: '',
-                sort: ''
+                sort: '',
+                fileList:[]
+                    // "element-ui": "1.3.1",
+
             },
             viewType: [],
             viewLevel: [],
@@ -158,28 +181,48 @@ export default {
                 address: data.address,
             }
         },
-        imgChange(files) {   //上传图片组件
-            if (files) {
-                console.log(files)
-                console.log(files[0].name)
-                this.form.file = files;
-            }
-        },
 
-
-        handleRemove(file, fileList) {   //ele上传图片组件
-            console.log(file, fileList);
+            //ele上传图片组件
+        submitUpload() {            
+            console.log("点击提交了")
+            // console.log(this.form)
+            // console.log(this.form.file)
+            this.$refs.upload.submit();
         },
         handlePreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
             console.log(file);
             console.log(file.name);
             console.log(file.url); 
         },
-        successUrl(response, file, fileList) {
+        handleSuccess(response, file, fileList) {
+            console.log("上传成功的回调");
+            console.log(response);
             console.log(file);
-            console.log(file.name);
-            console.log(file.url); 
-            this.files=file;
+            console.log(fileList);
+            this.form.fileList=fileList;
+        },
+        handlEerror(err, file, fileList) {
+            console.log(err);
+            console.log(file);
+            console.log(fileList);
+        },
+        handlChange(file, fileList) {
+            // console.log("图片变化的函数");
+            // console.log(file);
+            // console.log(fileList);
+            this.form.lng=this.dragData.lng;
+            this.form.lat=this.dragData.lat;
+        },
+        handlBefore(file) {
+            // console.log("图片上传之前");
+            // console.log(file);
+        },
+        haha() {
+            console.log("覆盖默认的上传行为，可以自定义上传的实现");
+            // console.log(file);
+            // this.submitUpload();
         },
 
 
@@ -217,42 +260,43 @@ export default {
         //新增
         onSubmit(formName) {
             console.log(1111)
-            console.log(this.files)
-            console.log(this.files.name)
-            console.log(this.files.url)
+            // console.log(this.files)
+            // console.log(this.files.name)
             // 提交表单数据
-            // console.log(this.form)
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
-                        // console.log(res.data)
-                        // console.log(res.data.data.currPage)
-                        // this.tableData = res.data.data;   //表格数据
-                        this.currentPage = res.data.data.currPage;
-                        this.codesID = res.data.code;
-                        if (this.codesID === 0) {    //参数错误
-                            this.$message({
-                                message: "参数错误,请重试~",
-                                type: 'warning'
-                            });
-                            this.getimgs();
-                            return;
-                        } else {
-                            this.$message({
-                                message: '添加成功!,请点击最后一页查看新增数据~~',
-                                type: 'success'
-                            });
-                            this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
-                        }
-                    })
-                } else {
-                    this.$message({
-                        message: '参数错误,请检查后重新输入~~',
-                        type: 'warning'
-                    });
-                    return false;
-                }
-            });
+            console.log(this.form)
+            console.log(this.form.file)
+            
+            // this.$refs[formName].validate((valid) => {
+            //     if (valid) {
+            //         axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
+            //             // console.log(res.data)
+            //             // console.log(res.data.data.currPage)
+            //             // this.tableData = res.data.data;   //表格数据
+            //             this.currentPage = res.data.data.currPage;
+            //             this.codesID = res.data.code;
+            //             if (this.codesID === 0) {    //参数错误
+            //                 this.$message({
+            //                     message: "参数错误,请重试~",
+            //                     type: 'warning'
+            //                 });
+            //                 this.getimgs();
+            //                 return;
+            //             } else {
+            //                 this.$message({
+            //                     message: '添加成功!,请点击最后一页查看新增数据~~',
+            //                     type: 'success'
+            //                 });
+            //                 this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
+            //             }
+            //         })
+            //     } else {
+            //         this.$message({
+            //             message: '参数错误,请检查后重新输入~~',
+            //             type: 'warning'
+            //         });
+            //         return false;
+            //     }
+            // });
         },
     }
 }
