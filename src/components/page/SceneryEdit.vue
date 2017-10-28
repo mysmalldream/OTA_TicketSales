@@ -7,116 +7,113 @@
                 <el-breadcrumb-item>修改</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="form-box">
-            <el-form ref="form" :model="form" label-width="90px">
-                <el-form-item label="景区编号" prop="id" :rules="[{ required: true, message: '景区编号不能为空'}]">
-                    <el-input v-model="form.id" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="景区名称" prop="name" :rules="[{ required: true, message: '景区名称不能为空'}]">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="景区位置">
-                    <div class="map">
-                        <div>
-                            <b>经度：</b>{{ dragData.lng }}
-                            <b>纬度：</b>{{ dragData.lat }}
-                            <div class="dizhi">
-                                <b>详细地址:</b>{{ dragData.address }}
-                            </div>
-                            <el-input type="hidden" v-model="form.lng" :rules="[{ required: true, message: '景区名称不能为空'}]"></el-input>
-                            <el-input type="hidden" v-model="form.lat"></el-input>
-                        </div>
+        <form id="forms" action=""  method="post" enctype="multipart/form-data" >
+            <label for="id">景区编号:</label>
+            <input type="text" name="id" id="id" disabled/>
+            <br>
+            <label for="name">景区名称:</label>
+            <input type="text" name="name" id="name" required="required"/>
+            <br>
+            <label for="dizhi">景区位置:</label> <el-tag type="success">[★小贴士★]输入景区名称或拖动地图以选择景区位置~</el-tag>
+                <div class="map">
+                    <div>
+                        <b>经度：</b><input type="text" name="lng"  id="lng" disabled required="required"/><b>纬度：</b><input type="text" name="lat" id="lat" disabled required="required"/>
                     </div>
-                    <div class="m-part">
-                        <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
-                    </div>
-                </el-form-item>
-                <el-form-item label="景区分类" prop="type" :rules="[{ required: true, message: '景区分类不能为空'}]">
-                    <el-select v-model="form.type" placeholder="请选择" @change="handleChange1">
-                        <el-option v-for="item in viewType" :key="item.id" :label="item.id" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="景区等级" prop="level" :rules="[{ required: true, message: '景区等级不能为空'}]">
-                    <el-select v-model="form.level" placeholder="请选择" @change="handleChange2">
-                        <el-option v-for="item in viewLevel" :key="item.id" :label="item.id" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="景区简介" prop="remark" :rules="[{ required: true, message: '景区简介不能为空'}]">
-                    <el-input type="textarea" v-model="form.remark"></el-input>
-                </el-form-item>
-                <el-form-item label="地址" prop="address" :rules="[{ required: true, message: '地址不能为空'}]">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-                <el-form-item label="营业时间" prop="businessTime" :rules="[{ required: true, message: '营业时间不能为空'}]">
-                    <el-input v-model="form.businessTime" placeholder="请输入起止时间,格式为 (8:00-17:00)"></el-input>
-                </el-form-item>
-                <el-form-item label="电话" prop="phone" :rules="[{ required: true, message: '电话不能为空'}]">
-                    <el-input type="number" v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="温馨提示" prop="reminder" :rules="[{ required: true, message: '温馨提示不能为空'}]">
-                    <el-input type="textarea" v-model="form.reminder"></el-input>
-                </el-form-item>
-                <el-form-item label="优惠政策" prop="discount" :rules="[{ required: true, message: '优惠政策不能为空'}]">
-                    <el-input type="textarea" v-model="form.discount"></el-input>
-                </el-form-item>
-                <el-form-item label="公交线路" prop="busMessage" :rules="[{ required: true, message: '公交线路不能为空'}]">
-                    <el-input type="textarea" v-model="form.busMessage"></el-input>
-                </el-form-item>
-                <el-form-item label="自驾线路" prop="selfRoute" :rules="[{ required: true, message: '自驾线路不能为空'}]">
-                    <el-input type="textarea" v-model="form.selfRoute"></el-input>
-                </el-form-item>
-                <el-form-item label="上传照片" prop="file">
-                    <!-- <el-input type="file" multiple="multiple" v-model="form.file"></el-input> multiple='true'  -->
-                    <!-- <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="+"></image-uploader> -->
-                    <el-upload class="upload-demo"  list-type="picture-card" action="http://192.168.1.109:8080/TicketSales/view/add.action" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="successUrl" :file-list="fileList2" name="file" >
-                        <el-button size="small" type="primary">点击上传</el-button>&nbsp;&nbsp;<span slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item label="业务人员" prop="staff" :rules="[{ required: true, message: '业务人员不能为空'}]">
-                    <el-select v-model="form.staff" placeholder="请选择" @change="handleChange3">
-                        <el-option v-for="item in staff" :key="item.id" :label="item.name" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="所属省份" prop="province" :rules="[{ required: true, message: '所属省份不能为空'}]">
-                    <el-select v-model="form.province" placeholder="请选择所属省份" @change="handleChange4">
-                        <el-option v-for="item in province" :key="item.id" :label="item.id" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="所属城市" prop="city" :rules="[{ required: true, message: '所属城市不能为空'}]">
-                    <el-select v-model="form.city" placeholder="请选择所属城市" @change="handleChange5">
-                        <el-option v-for="item in city" :key="item.id" :label="item.name" :value="item"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="景区排序" prop="sort" :rules="[{ required: true, message: '景区排序不能为空'},{ type: 'number',min:0, message: '景区排序必须为不小于0数字值'}]">
-                    <el-input v-model.number="form.sort" placeholder="优先级为0,1,2,3...的数字值,数值越小级别越高"></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="viewId">
-                    <el-button type="primary" @click="onSubmit('form')">提 交</el-button>
-                    <el-button @click="resetForm('form')">重 置</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
+                </div>
+                        <div><b>详细地址:</b>{{ dragData.address }}</div>
+                <div class="m-part">
+                    <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
+                </div>
+            <label for="type">景区分类:</label>
+            <select id="type" name="type" v-model="form.type">
+            <!-- <option>山西</option> -->
+            </select>
+            <br>
+            <label for="level">景区等级:</label>
+            <select id="level" name="level" v-model="form.level">
+            <option>山西</option>
+            </select>
+            <br>
+            <label for="remark">景区简介:</label>
+            <textarea id="remark" cols="50" rows="4" name="remark" placeholder="在这里输入内容..." required="required"></textarea>
+            <br>
+            <label for="address">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</label>
+            <textarea id="address" cols="50" rows="4" name="address" placeholder="在这里输入内容..." required="required"></textarea>
+            <br>
+            <label for="businessTime">营业时间:</label>
+            <input  type="text" name="businessTime" id="businessTime" placeholder="格式为(9:00-17:00)" required="required"/>
+            <br>
+            <label for="phone">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</label>
+            <input type="text" name="phone" id="phone" required="required"/>
+            <br>
+            <label for="reminder">温馨提示:</label>
+            <textarea id="reminder" cols="50" rows="4" name="reminder" placeholder="在这里输入内容..." ></textarea>
+            <br>
+            <label for="discount">优惠政策:</label>
+            <textarea id="discount" cols="50" rows="4" name="discount" placeholder="在这里输入内容..." required="required"></textarea>
+            <br>
+            <label for="busMessage">公交线路:</label>
+            <textarea id="busMessage" cols="50" rows="4" name="busMessage" placeholder="在这里输入内容..." ></textarea>
+            <br>
+            <label for="selfRoute">自驾线路:</label>
+            <textarea id="selfRoute" cols="50" rows="4" name="selfRoute" placeholder="在这里输入内容..." ></textarea>
+            <br>
+            <hr>
+            <ul class="pic">
+                123
+                <!-- <li><img id="pics" src=""></li> -->
+            </ul>
+            
+            <label for="file">上传图片:</label>
+            <input type="file" name="file" multiple="multiple" required="required" id="file"/>
+            <br>
+            <label for="staffId">业务人员:</label>
+            <!-- staffId  staffName -->
+            <select id="staff" name="staffId" v-model="form.staffName">
+            <!-- <option>山西</option> -->
+            </select>
+            <br>
+            <label for="province">所属省份:</label>
+            <select id="province" name="province" v-model="form.province">
+            <option>山西</option>
+            </select>
+            <br>
+            <label for="city">所属城市:</label>
+            <select id="city" name="city" v-model="form.city">
+            <option>山西</option>
+            </select>
+            <br>
+            <label for="sort">景区排序:</label>
+            <input id="sort" type="number" name="sort" required="required" placeholder="请输入0,1,2...的数字值"/>
+            <br>
+            <input type="button" value="提 交"  id="button" @click="button">
+        </form>
     </div>
 </template>
 
 <script>
-import Vue from "vue";
-
 import axios from 'axios';
 import common from '../../kits/commonapi.js';   //公共域名文件
 import mapDrag from '../common/mapDrag'  // "vue-loader": "^11.3.4",
-import ImageUploader from '../upImgs/ImageUploader'  // 上传图片组件
+// import jQuery from '../common/jquery-3.2.1.js'  // "vue-loader": "^11.3.4",
+import $ from 'jquery'
+
+
 
 export default {
     components: {    //地图
-        mapDrag, ImageUploader
+        mapDrag
     },
     data: function() {
         return {
-            val:'',
-            fileList2: [{ name: 'food.jpeg', url:'http://imgsrc.baidu.com/imgad/pic/item/3801213fb80e7beca9004ec5252eb9389b506b38.jpg' }],
+            dialogImageUrl: '',
+            dialogVisible: false,
+            // urls:"http://192.168.1.200:8080/interface/view/add.action",   //上传图片文件地址
+            urls:common.apidomain+"/view/add.action",   //上传图片文件地址
+            // fileList: [{ name: '图片11.jpeg', url:'blob:http://localhost:8080/3a8f19d4-ac5b-4cb9-9368-1936e6c71ff4'},{ name: '图片11.jpeg', url:'blob:http://localhost:8080/2f73418c-064a-4054-887c-c4a1552e2eb3'}],
+            fileList: [],
             currentPage: 1,           //当前页码数
-            dragData: {   //地图
+            dragData: {               //地图
                 lng: null,
                 lat: null,
                 address: null,
@@ -124,7 +121,6 @@ export default {
             form: {
                 lng:'',
                 lat:'',
-                id:'',
                 name: '',
                 type: '',
                 level: '',
@@ -142,95 +138,213 @@ export default {
                 staffName: '',
                 province: '',
                 city: '',
-                sort: ''
+                sort: '',
+                fileList:[]
+                    // "element-ui": "1.3.1",
+
             },
-            id:[],
-            staffId: '',
-            staffName: '',
             viewType: [],
             viewLevel: [],
             staff: [],
             province: [],
             city: [],
             maxSize: 307200, // 最大限制 单位kb
-            files:[]
+            files:[],
+            piclists:[]
         }
     },
     created() {
-        this.getEdit();
         this.getAddress();
+        this.getdatas()
+        this.map();
+        // this.button();
+        
     },
     methods: {
+        getdatas(){
+            var type = '', level = '', staff = '', province = '', city = '';
+                $(function () {
+                    $.ajax({
+                    type: "get",
+                    url:common.apidomain+"/view/addUI.action",
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data)
+                        data.data.viewType.forEach(function (el) {  //景区分类
+                        type +=
+                            '<option>' + el + '</option>'
+                        }, this);
+                        $("#type").html(type);
+
+                        data.data.viewLevel.forEach(function (el) {  //景区等级
+                        level +=
+                            '<option>' + el + '</option>'
+                        }, this);
+                        $("#level").html(level);
+
+                        data.data.staff.forEach(function (el) {  //业务人员
+                        //   console.log(el)
+                        staff +=
+                            '<option value=' + el.id + '>' + el.name + '</option>'
+                        }, this);
+                        $("#staff").html(staff);
+
+                        data.data.viewProvince.forEach(function (el) {    //省份
+                        province +=
+                            '<option>' + el + '</option>'
+                        }, this);
+                        $("#province").html(province);
+                        data.data.viewCity.forEach(function (el) {      //城市
+                        city +=
+                            '<option>' + el + '</option>'
+                        }, this);
+                        $("#city").html(city);
+
+                    }
+                    })
+                })    
+        },
+        map(){
+            var ids=this.$route.query.id;  //当前产品的id   修改输入框回显
+            var type = '', level = '', staff = '', province = '', city = '',imgs;
+                $(function () {
+                    $.ajax({
+                    type: "get",
+                    url:common.apidomain+"/view/editUI.action?id="+ids,
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data)
+                        console.log(data.data.pic);
+                        data.data.pic.forEach(function (v,i){
+                            console.log(v)
+                            imgs+="<li><img id='pics' src="+v+"></li>";
+                        })
+                        $('.pic').html(imgs)
+                        this.piclists=data.data.pic;
+                        $('#id').val(data.data.id)
+                        $('#name').val(data.data.name)
+                        $('#lng').val(data.data.lng)
+                        $('#lat').val(data.data.lat)
+                        $('#remark').val(data.data.remark)
+                        $('#address').val(data.data.address)
+                        $('#businessTime').val(data.data.businessTime)
+                        $('#phone').val(data.data.phone)
+                        $('#reminder').val(data.data.reminder)
+                        $('#discount').val(data.data.discount)
+                        $('#busMessage').val(data.data.busMessage)
+                        $('#selfRoute').val(data.data.selfRoute)
+                        $('#sort').val(data.data.sort)
+                    }
+                    })
+                })    
+        },
+        button(){   //修改后提交
+            if($('#name').val()==''){
+            this.$message({showClose: true,message: '景区名称不能有空',type: 'warning'});
+            }else if($('#remark').val()==''){
+            this.$message({showClose: true,message: '景区简介不能有空',type: 'warning'});
+            }else if($('#address').val()==''){
+            this.$message({showClose: true,message: '地址不能有空',type: 'warning'});
+            }else if($('#businessTime').val()==''){
+            this.$message({showClose: true,message: '营业时间不能有空',type: 'warning'});
+            }else if($('#phone').val()==''){
+            this.$message({showClose: true,message: '电话不能有空',type: 'warning'});
+            }else if($('#discount').val()==''){
+            this.$message({showClose: true,message: '优惠政策不能有空',type: 'warning'});
+            }else if($('#sort').val()==''){
+            this.$message({showClose: true,message: '景区排序不能有空',type: 'warning'});
+            }
+            else{
+                var form = new FormData(document.getElementById("forms"));
+             $.ajax({
+                url:common.apidomain+"/view/edit.action?id="+$('#id').val(),
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                success:function(data){
+                    // console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });        
+            this.$message({showClose: true,message: '恭喜你，新增成功~,请点击最后一页查看新增数据~',type: 'success'});
+            this.$router.push({ path: './SceneryManage' });
+            }
+            
+            
+        },
+
+
         dragMap(data) {   //地图
             // console.log(data)
+            $("#lng").val(data.position.lng)
+            $("#lat").val(data.position.lat)
             this.dragData = {
                 lng: data.position.lng,
                 lat: data.position.lat,
                 address: data.address,
             }
         },
-        imgChange(files) {   //上传图片组件
-            if (files) {
-                console.log(files)
-                console.log(files[0].name)
-                this.form.file = files;
-            }
-        },
 
-
-        handleRemove(file, fileList) {   //ele上传图片组件
-            console.log(file, fileList);
+            //ele上传图片组件
+        submitUpload() {            
+            console.log("点击提交了")
+            // console.log(this.form)
+            // console.log(this.form.file)
+            this.$refs.upload.submit();
         },
         handlePreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
             console.log(file);
             console.log(file.name);
             console.log(file.url); 
         },
-        successUrl(response, file, fileList) {
+        handleSuccess(response, file, fileList) {
+            console.log("上传成功的回调");
+            console.log(response);
             console.log(file);
-            console.log(file.name);
-            console.log(file.url); 
-            this.files=file;
+            console.log(fileList);
+            this.form.fileList=fileList;
         },
-
+        handlEerror(err, file, fileList) {
+            console.log(err);
+            console.log(file);
+            console.log(fileList);
+        },
+        handlChange(file, fileList) {
+            // console.log("图片变化的函数");
+            // console.log(file);
+            // console.log(fileList);
+            this.form.lng=this.dragData.lng;
+            this.form.lat=this.dragData.lat;
+        },
+        handlBefore(file) {
+            // console.log("图片上传之前");
+            // console.log(file);
+        },
+        haha() {
+            console.log("覆盖默认的上传行为，可以自定义上传的实现");
+            // console.log(file);
+            // this.submitUpload();
+        },
 
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-        getEdit(){    //编辑下拉回显
-             axios.get(common.apidomain + "/view/addUI.action").then((res) => {
-                this.viewType = res.data.data.viewType;    //景区分类
-                this.viewLevel = res.data.data.viewLevel;    //景区等级
-                this.staff = res.data.data.staff;           //业务人员
-                this.province = res.data.data.viewProvince;    //业务人员
-                this.city = res.data.data.viewCity;           //业务人员
-            })
-        },
-        getAddress() {
+        getAddress() {    //修改下拉回显默认
             axios.get(common.apidomain + "/view/editUI.action?id="+this.$route.query.id).then((res) => {
-                this.form.id=res.data.data.id;
-                this.form.name=res.data.data.name;
-                this.form.remark=res.data.data.remark;
-                this.form.address=res.data.data.address;
-                this.form.businessTime=res.data.data.businessTime;
-                this.form.phone=res.data.data.phone;
-                this.form.reminder=res.data.data.reminder;
-                this.form.discount=res.data.data.discount;
-                this.form.busMessage=res.data.data.busMessage;
-                this.form.selfRoute=res.data.data.selfRoute;
-                this.form.lng=res.data.data.lng;
-                this.form.lat=res.data.data.lat;
-                this.form.sort=res.data.data.sort;
-                this.staffId=res.data.data.staffId;
-                this.staffName=res.data.data.staffName;
+                // console.log(res.data);
                 this.form.type = res.data.data.type;    //景区分类
                 this.form.level = res.data.data.level;    //景区等级
-                this.form.staff = res.data.data.staffName;    //业务人员
-                this.form.province = res.data.data.province;    //省份
-                this.form.city = res.data.data.city;            //城市
+                this.form.staffName = res.data.data.staffName;    //业务人员
+                this.form.province = res.data.data.province;    //所属省份
+                this.form.city = res.data.data.city;    //所属城市
             })
         },
-        //修改数据
+        //新增数据
         handleChange1(value) {
             // console.log(value)
             this.form.type = value;
@@ -248,49 +362,52 @@ export default {
         handleChange5(value) {           //业务人员
             this.form.city = value;
         },
-        //修改数据提交
+        //新增
         onSubmit(formName) {
             console.log(1111)
-            console.log(this.files)
-            console.log(this.files.name)
-            console.log(this.files.url)
+            // console.log(this.files)
+            // console.log(this.files.name)
             // 提交表单数据
-            // console.log(this.form)
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    axios.post(common.apidomain + "/view/edit.action?id=" +this.form.id +  "&name="+this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staffId + "&staffName=" + this.form.staffName + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.form.lng + "&lat=" + this.form.lat).then((res) => {
-                        console.log(res.data)
-                        // console.log(res.data.data.currPage)
-                        // this.tableData = res.data.data;   //表格数据
-                        // this.currentPage = res.data.data.currPage;
-                        this.codesID = res.data.code;
-                        if (this.codesID === 0) {    //参数错误
-                            this.$message({
-                                message: "修改失败,请重试~",
-                                type: 'warning'
-                            });
-                            // this.getimgs();
-                            return;
-                        } else {
-                            this.$message({
-                                message: '修改成功!~~',
-                                type: 'success'
-                            });
-                            this.$router.push({ path: '/SceneryManage' });
-                        }
-                    })
-                } else {
-                    this.$message({
-                        message: '参数错误,请检查后重新输入~~',
-                        type: 'warning'
-                    });
-                    return false;
-                }
-            });
+            console.log(this.form)
+            console.log(this.form.file)
+            
+            // this.$refs[formName].validate((valid) => {
+            //     if (valid) {
+            //         axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
+            //             // console.log(res.data)
+            //             // console.log(res.data.data.currPage)
+            //             // this.tableData = res.data.data;   //表格数据
+            //             this.currentPage = res.data.data.currPage;
+            //             this.codesID = res.data.code;
+            //             if (this.codesID === 0) {    //参数错误
+            //                 this.$message({
+            //                     message: "参数错误,请重试~",
+            //                     type: 'warning'
+            //                 });
+            //                 this.getimgs();
+            //                 return;
+            //             } else {
+            //                 this.$message({
+            //                     message: '添加成功!,请点击最后一页查看新增数据~~',
+            //                     type: 'success'
+            //                 });
+            //                 this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
+            //             }
+            //         })
+            //     } else {
+            //         this.$message({
+            //             message: '参数错误,请检查后重新输入~~',
+            //             type: 'warning'
+            //         });
+            //         return false;
+            //     }
+            // });
         },
     }
 }
 </script>
+
+
 <style scoped>
 .form-box {
     width: 50%;
@@ -298,12 +415,9 @@ export default {
 
 .map {
     width: 100%;
-    height: 60px;
+    height: 33px;
     border: 1px solid #ccc;
-}
-
-.dizhi {
-    line-height: 100%;
+    margin-bottom: 10px;
 }
 
 .m-part .mapbox {
@@ -312,5 +426,43 @@ export default {
     height: 300px;
     margin-bottom: 10px;
     float: left;
+}
+label{
+    width: 100px;
+}
+#button{
+    width: 90px;
+    background-color: #1FA0FF;
+    height: 35px;
+    color:#fff;
+    border-radius: 5px;
+    border: none;
+    margin-top: 5px;
+    cursor:pointer;
+}
+#forms{
+    width: 60%;
+}
+input,select{
+    width: 300px;
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.pic li{
+    display: inline-block;
+}
+.pic span img{
+    width: 100px;
+    height: 100px;
+}
+li{
+    list-style: none;
+    width: 100px;
+    height: 100px;
+}
+.pic #pics{
+    width: 10px !important;
+    height: 10px;
 }
 </style>
