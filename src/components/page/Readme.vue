@@ -6,9 +6,10 @@
             </el-breadcrumb>
         </div>
         <div class="ms-doc">
-            <h3>欢迎访问易旅通后台管理系统</h3>
+            <h3>欢迎访问</h3>
         </div>
-
+		<p>易旅通后台管理系统</p>
+	</div>
     </div>
 </template>
 
@@ -16,7 +17,9 @@
     export default {
         data: function(){
             return {}
-        }
+        },
+        created() {
+    },
     }
 </script>
 
@@ -65,4 +68,26 @@
     .ms-doc article .el-checkbox{
         margin-bottom: 5px;
     }
+
+   p{  width:50%;
+    margin:40px auto;
+    line-height:50px;
+    font-size:50px;
+    text-align:center;
+    -webkit-background-clip: text;    /*按文字裁剪*/
+    -webkit-text-fill-color: transparent;    /*文字的颜色使用背景色*/
+    background-color:red;    /*设置一个背景色*/
+    background-image: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, 0.6) 30%, #aff0ff 50%, rgba(0, 0, 0, 0.6) 70%);        /*设置渐变的背景，按对角线渐变*/
+    background-blend-mode: hard-light;    /*设置背景为混合模式下的强光模式*/
+    background-size: 200%;
+    -webkit-animation: shine 2s infinite;    /*给背景添加动画改变位置*/
+}
+@-webkit-keyframes shine {
+
+    from {background-position: 100%;}
+
+    to {background-position: 0;}
+
+}
+
 </style>
