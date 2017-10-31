@@ -3,10 +3,12 @@
         <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>
             <template v-for="item in items">
                 <template v-if="item.subs">
-                    <el-submenu :index="item.index">
+                    <el-submenu :index="item.index" v-if="item.hidden">
                         <template slot="title">
-                            <i :class="item.icon"></i>{{ item.title }}</template>
-                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
+                            <i :class="item.icon"></i>{{ item.title }}
+                        </template>
+                        <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index" v-show="subItem.hidden">
+                                    {{ subItem.title }}
                         </el-menu-item>
                     </el-submenu>
                 </template>
@@ -14,7 +16,7 @@
                                     <el-menu-item :index="item.index">
                                         <i :class="item.icon"></i>{{ item.title }}
                                     </el-menu-item>
-                                </template> -->
+                </template> -->
                 <template v-else v-show="true">
                     <el-menu-item :index="item.index">
                         <i :class="item.icon"></i>{{ item.title }}
@@ -26,31 +28,39 @@
 </template>
 
 <script>
+
+
 export default {
     data() {
         return {
+            // power:false,               //是否显示增删改的按钮权限
             items: [
                 {
                     icon: 'el-icon-setting',
                     index: 'readme',
-                    title: '欢迎页'
+                    title: '欢迎页',
+                    hidden: true,
                 },
                 {
                     icon: 'el-icon-date',
                     index: '3',
                     title: '基础设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'DistributorCategory',
-                            title: '分销商类别设置'
+                            title: '分销商类别设置',
+                            hidden: true,
                         },
                         {
                             index: 'TicketTypeSet',
-                            title: '票型类别设置'
+                            title: '票型类别设置',
+                            hidden: true,
                         },
                         {
                             index: 'PriorityClassSet',
-                            title: '优先级类别设置'
+                            title: '优先级类别设置',
+                            hidden: true,
                         }
                     ]
                 },
@@ -58,15 +68,18 @@ export default {
                     icon: 'el-icon-message',
                     index: '4',
                     title: '景区管理设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'SceneryManage',
-                            title: '景区管理'
+                            title: '景区管理',
+                            hidden: true,
                         },
-                        {
-                            index: 'ScenerynewAdd',
-                            title: '新增'
-                        },
+                         {
+                             index: 'ScenerynewAdd',
+                             title: '新增',
+                             hidden: true,
+                         },
                         // {
                         //     index: 'SceneryEdit',
                         //     title: '修改'
@@ -85,14 +98,17 @@ export default {
                     icon: 'el-icon-time',
                     index: '5',
                     title: '产品信息管理设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'ProductManage',
-                            title: '产品信息管理'
+                            title: '产品信息管理',
+                            hidden: true,
                         },
                         {
                             index: 'ProductnewAdd',
-                            title: '新增'
+                            title: '新增',
+                            hidden: true,
                         },
                     ]
                 },
@@ -100,43 +116,55 @@ export default {
                     icon: 'el-icon-document',
                     index: '6',
                     title: '用户管理设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'UserManagement',
-                            title: '用户管理'
+                            title: '用户管理',
+                            hidden: true,
                         },
                     ]
-                }, {
+                }, 
+                {
                     icon: 'el-icon-share',
                     index: '7',
                     title: '分销商管理设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'DistributorManagement',
-                            title: '分销商管理'
+                            title: '分销商管理',
+                            hidden: true,
                         }, {
                             index: 'Examine',
-                            title: '审核'
+                            title: '审核',
+                            hidden: true,
                         }, {
                             index: 'ContractManage',
-                            title: '合同管理'
+                            title: '合同管理',
+                            hidden: true,
                         },
                     ]
-                },{
+                },
+                {
                     icon: 'el-icon-menu',
                     index: '8',
                     title: '订单管理设置',
+                    hidden: true,
                     subs: [
                         {
                             index: 'OrderManagement',
-                            title: '订单管理'
+                            title: '订单管理',
+                            hidden: true,
                         },
                          {
                             index: 'OrderPayment',
-                            title: '未支付订单'
+                            title: '未支付订单',
+                            hidden: true,
                         }, {
                             index: 'OrderOff',
-                            title: '已核销订单'
+                            title: '已核销订单',
+                            hidden: true,
                         },
                     ]
                 },
@@ -164,10 +192,28 @@ export default {
             ]
         }
     },
+    created() {
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
+    },
     methods: {
-        // if(typeof 6 === "number") {
+        getPowerId(){
+            // console.log(this.items[3].subs)
+            // console.log(this.items[3].subs[1].hidden)
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.items[4].hidden=true;
+                }else{
+                    this.items[4].hidden=false;
 
-        // }
+                    this.items[5].subs[1].hidden=false;    //分销商管理
+                    this.items[5].subs[2].hidden=false;
+
+                    this.items[2].subs[1].hidden=false;    //景区管理新增
+                    this.items[3].subs[1].hidden=false;    //产品信息管理新增
+                    
+
+                }
+        }
     },
     computed: {
         onRoutes() {

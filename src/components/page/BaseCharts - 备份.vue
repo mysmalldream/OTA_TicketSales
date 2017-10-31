@@ -6,8 +6,7 @@
                 <el-breadcrumb-item>基础图表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <h3>无权限查看此页</h3>
-        <!-- <div class="plugins-tips">
+        <div class="plugins-tips">
             vue-schart：vue.js封装sChart.js的图表组件。
             访问地址：<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
         </div>
@@ -26,7 +25,7 @@
         <div class="schart">
         <div class="content-title">环形图</div>
         <schart canvasId="ring" width="500" height="400" :data="data2" type="ring" :options="options2"></schart>
-        </div> -->
+        </div>
     </div>
 </template>
 

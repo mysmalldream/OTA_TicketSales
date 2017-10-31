@@ -9,7 +9,7 @@
             </el-breadcrumb>
         </div>
         <div class="plugins-tips">
-            <el-button icon="edit" type="primary" @click="dialogFormVisible=true">新 增</el-button>
+            <el-button icon="edit" type="primary" @click="dialogFormVisible=true" v-if="power">新 增</el-button>
             <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
                 <el-form :model="form" ref="numberValidateForm">
                     <el-form-item label="优先级类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '优先级类别不能为空'}]">
@@ -33,7 +33,7 @@
             </el-table-column>
             <el-table-column align=center prop="priority" label="优先级">
             </el-table-column>
-            <el-table-column align=center label="操作">
+            <el-table-column align=center label="操作" v-if="power">
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
@@ -74,6 +74,7 @@ export default {
     data: function() {
         const self = this;
         return {
+            power:false,               //是否显示增删改的按钮权限
             total: 1,
             pagingNowNumberList: 1,   //当前显示页码数据
             tableData: [],            //当前表格数据
@@ -99,8 +100,17 @@ export default {
     },
     created() {
         this.getimgs();
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
+        getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else{
+                    this.power=false;
+                }
+        },
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/priority/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {

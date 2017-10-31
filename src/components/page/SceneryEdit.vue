@@ -60,7 +60,7 @@
             <br>
             <hr>
             <ul class="pic">
-                123
+                <!-- 123111 -->
                 <!-- <li><img id="pics" src=""></li> -->
             </ul>
             
@@ -219,7 +219,8 @@ export default {
                             console.log(v)
                             imgs+="<li><img id='pics' src="+v+"></li>";
                         })
-                        $('.pic').html(imgs)
+                        console.log(imgs)
+                        // $('.pic').append(imgs);
                         this.piclists=data.data.pic;
                         $('#id').val(data.data.id)
                         $('#name').val(data.data.name)

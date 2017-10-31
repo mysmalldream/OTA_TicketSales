@@ -56,7 +56,7 @@
             </el-form>
         </div>
         <div class="plugins-tips">
-            <el-button icon="edit" type="primary" @click="newAdd()">新 增</el-button>
+            <el-button icon="edit" type="primary" @click="newAdd()" v-if="power">新 增</el-button>
             <el-button icon="check" type="success" @click="handleDownload()">导出为Excel</el-button>
         </div>
         <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
@@ -76,7 +76,7 @@
             </el-table-column>
             <el-table-column align=center prop="staffName" label="景区负责人">
             </el-table-column>
-            <el-table-column align=center label="操作">
+            <el-table-column align=center label="操作" v-if="power">
                 <template scope="scope">
                     <router-link :to="{path:'/SceneryEdit',query: { id: scope.row.id }}">
                         <el-button type="success" size="small">修 改</el-button>
@@ -103,6 +103,7 @@ import common from '../../kits/commonapi.js';   //公共域名文件
 export default {
     data: function() {
         return {
+            power:false,               //是否显示增删改的按钮权限
             form: {
                 viewId: '',
                 staffName: '',
@@ -141,8 +142,17 @@ export default {
     created() {
         this.getAddress();
         this.getimgs();
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
+        getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else{
+                    this.power=false;
+                }
+        },
         //查询数据
         handleChange1(value) {   //logic
             this.form.logic = value;

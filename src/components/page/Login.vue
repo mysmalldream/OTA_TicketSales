@@ -15,14 +15,15 @@
                 <!-- <p style="font-size:12px;line-height:30px;color:#999;"> 用户名和密码暂时随便填。</p> -->
             </el-form>
         </div>
+        
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import common from '../../kits/commonapi.js';   //公共域名文件
-
     export default {
+        
         data: function(){
             return {
                 ruleForm: {
@@ -40,6 +41,7 @@ import common from '../../kits/commonapi.js';   //公共域名文件
             }
         },
         methods: {
+            
             submitForm(formName) {
                 const self = this;
                 self.$refs[formName].validate((valid) => {
@@ -47,15 +49,21 @@ import common from '../../kits/commonapi.js';   //公共域名文件
                         localStorage.setItem('ms_username',self.ruleForm.username);
                         // console.log(this.ruleForm)
                         axios.post(common.apidomain + "/login/login.action?loginName="+this.ruleForm.username+"&password="+this.ruleForm.password).then((res) => {
-                            console.log(res.data)
-                            // console.log(res.data.data.id)
-                            // console.log(res.data.data.powerId)
+                            // let extendsRoutes = filterRoutes(res.menu);
+                            // window.sessionStorage["role"] = JSON.stringify(res.data.data.menu);
+                            // this.$router.addRoutes(role);
+                            // sessionStorage.setItem('res.menu',JSON.stringify(extendsRoutes[0].role));
+                            // console.log(res.data)
+                            // console.log(res.data.data.menu)
+                            // console.log(this.$router)
+                            // this.$router.addRoutes(res.data.data.menu)
                             if(res.data.code==0){
-                                this.$message({message: '登陆失败,请重试~~',type: 'warning'});
+                                this.$message({message: '登陆失败,用户名或密码错误,请重试~~',type: 'warning'});
                                 return false;
                             }else{
-                                this.$router.push({path: "/readme",query: { id: res.data.data.id,powerId:res.data.data.powerId }});
-                                this.$message({type: 'info',message: '登陆成功'});
+                                // this.$router.push({path: "/readme",query: { id: res.data.data.id,powerId:res.data.data.powerId }});
+                                this.$router.push({path: "/readme"});
+                                this.$message({type: 'success',message: '登陆成功'});
                                 var ids = JSON.stringify(res.data.data.id);
                                 var powerIds = JSON.stringify(res.data.data.powerId);
                                 window.sessionStorage["id"] = ids;

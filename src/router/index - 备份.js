@@ -3,6 +3,8 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
+console.log(111111)
+console.log(JSON.parse(window.sessionStorage.getItem("role")))
 const router = new Router({
   routes: [
     {
@@ -155,11 +157,51 @@ const router = new Router({
     },
     {
       path: "/login",
-      component: resolve => require(["../components/page/Login.vue"], resolve) //默认首页
+      component: resolve => require(["../components/page/Login.vue"], resolve)
     }
   ]
 });
 
+// router.beforeEach((to, from, next) => {
+//   // if (to.matched.some(record => record.meta.requiresAuth)) {
+//   let powerId = 0;
+//   console.log(to);
+//   console.log(to.meta.requiresAuth);
+//   // if(powerId==0){
+//   //   to.meta.requiresAuth=true;
+//   // }else{
+//   //   to.meta.requiresAuth=false;
+//   // };
+//   console.log(to.meta.requiresAuth);
+  
+//   // if (to.meta.requiresAuth) {
+//   //   // console.log(from)
+//   //   // next({ path: "/UserManagement" });
+//   //   next({ path: "/UserManagement" });
+//   // } else {
+//   //   // next() // make sure to always call next()!
+//   //   // next({ path: "/" });
+//   //   // next();
+//   // }
+
+// });
+
+// router.beforeEach((to, from, next) => {
+//     console.log(to)
+//     let pass = 1;
+//     if(pass===1){
+//         console.log('无权访问');
+//       // location.href = '/login/';
+//     // next();
+    
+//     }else{
+//       console.log('无权访问');
+//       // location.href = '/login/';
+//       // return false;      
+//     }
+//     next();
+    
+// })
 
 
 export default router;
