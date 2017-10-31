@@ -89,6 +89,7 @@ import common from '../../kits/commonapi.js';   //公共域名文件
 export default {
     data: function() {
         return {
+            power:false,               //是否显示增删改的按钮权限
             form: {
                 orderId: '',
                 view: '',
@@ -129,8 +130,19 @@ export default {
     created() {
         // this.getAddress();
         this.getimgs();
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
+       getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else if(powerId==1){
+                    this.power=false;
+                }else{  
+                    this.$router.push({path:'/login'});
+                }
+        },
         //查询数据
         handleChange1(value) {   //状态
                 // console.log(value)

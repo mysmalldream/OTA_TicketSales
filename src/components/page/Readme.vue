@@ -9,16 +9,31 @@
             <h3>欢迎访问</h3>
         </div>
 		<p>易旅通后台管理系统</p>
-        <!-- <div class="center">
-            <vue-core-image-upload
-                class="btn btn-primary"
-                :crop="false"
-                @imageuploaded="imageuploaded"
-                :multiple="true"
-                :max-file-size="5242880"
-                url="http://192.168.1.109:8080/TicketSales/view/add.action" >
-            </vue-core-image-upload>
-        </div> -->
+        <div class="center">
+      <vue-core-image-upload
+        class="btn btn-primary"
+        :crop="false"
+        @imageuploaded="imageUploded"
+        :max-file-size="5242880"
+        :multiple="true"
+        :multiple-size="4"
+        url="http://192.168.1.109:8080/TicketSales/view/add.action" >
+      </vue-core-image-upload>
+    </div>
+    <!-- <table class="m-table bordered">
+      <thead>
+        <tr>
+          <th>文件名称</th>
+          <th>文件大小</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in fileList" :key="item.name">
+          <td>{{item.name}}</td>
+          <td>{{item.size}}</td>
+        </tr>
+      </tbody>
+    </table> -->
 	</div>
     </div>
 </template>
@@ -28,21 +43,19 @@ import VueCoreImageUpload from 'vue-core-image-upload'
 
     export default {
         components: {
-            'vue-core-image-upload': VueCoreImageUpload,
+            VueCoreImageUpload,
         },
         data: function(){
             return {
-                src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
-
+                fileList: [],
             }
         },
         methods:{
-            imageuploaded(res) {
-                console.log(res)
-                if (res.errcode == 0) {
-                    this.src = res.data.src;
-                }
-                },
+            imageUploded(res) {
+            if(res.errcode == 0) {
+                this.fileList = res.data;
+            }
+            }
         },
         created() {
     },

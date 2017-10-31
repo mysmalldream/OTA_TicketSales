@@ -99,6 +99,7 @@ export default {
     },
     data: function() {
         return {
+            power:false,               //是否显示增删改的按钮权限
             dialogImageUrl: '',
             dialogVisible: false,
             // urls:"http://192.168.1.200:8080/interface/view/add.action",   //上传图片文件地址
@@ -149,9 +150,20 @@ export default {
         // this.getAddress();
         this.map();
         // this.button();
-        
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
+
     },
     methods: {
+       getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else if(powerId==1){
+                    this.power=false;
+                }else{  
+                    this.$router.push({path:'/login'});
+                }
+        },
         map(){
             var type = '', level = '', staff = '', province = '', city = '';
                 $(function () {

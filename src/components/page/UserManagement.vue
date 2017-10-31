@@ -106,6 +106,7 @@ export default {
     data: function() {
         const self = this;
         return {
+            power:false,               //是否显示增删改的按钮权限
             total: 1,
             pagingNowNumberList: 1,   //当前显示页码数据
             tableData: [],            //当前表格数据
@@ -145,8 +146,19 @@ export default {
     },
     created() {
         this.getimgs();
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
+       getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else if(powerId==1){
+                    this.power=false;
+                }else{  
+                    this.$router.push({path:'/login'});
+                }
+        },
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/staff/findPageData.action?pageIndex=" + this.pagingNowNumberList).then((res) => {

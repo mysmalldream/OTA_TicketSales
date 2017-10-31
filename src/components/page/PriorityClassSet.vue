@@ -103,12 +103,14 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-        getPowerId(){
+       getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
-                }else{
+                }else if(powerId==1){
                     this.power=false;
+                }else{  
+                    this.$router.push({path:'/login'});
                 }
         },
         //数据的初次加载
