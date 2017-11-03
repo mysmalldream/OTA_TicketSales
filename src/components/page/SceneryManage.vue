@@ -145,13 +145,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=false;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -167,6 +169,7 @@ export default {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
                     });
+                    this.tableData = res.data.data.datas;   //表格数据
                     return false;
                 } {
                     this.$message.success('查询成功~~');

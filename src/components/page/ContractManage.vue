@@ -76,13 +76,15 @@ export default {
       this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
   },
   methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -121,7 +123,7 @@ export default {
         this.$message({showClose: true,message: '上传失败,请重试~',type: 'error'});
       },
       handleChange1(val){
-        //   console.log("下拉选择显示的")
+          console.log(val)
         //   console.log(val.id)
         //   console.log(val.url)
           this.dels.id=val.id;

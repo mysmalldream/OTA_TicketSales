@@ -9,11 +9,17 @@
         </div>
         <div class="form-box">
             <el-form ref="form" :inline="true" :model="form" label-width="100px">
-                <el-form-item label="起始日期" prop="startTime">
+                <el-form-item label="出游日期" prop="startTime">
                     <el-input type="date" v-model="form.startTime"></el-input>
+                </el-form-item>___
+                <el-form-item label="" prop="startTimeEnd">
+                    <el-input type="date" v-model="form.startTimeEnd"></el-input>
                 </el-form-item>
-                <el-form-item label="结束日期" prop="endTime">
+                <el-form-item label="下单日期" prop="endTime">
                     <el-input type="date" v-model="form.endTime" ></el-input>
+                </el-form-item>___
+                <el-form-item label="" prop="endTimeEnd">
+                    <el-input type="date" v-model="form.endTimeEnd" ></el-input>
                 </el-form-item>
                 
                 <el-form-item>
@@ -79,7 +85,9 @@ export default {
             power:false,               //是否显示增删改的按钮权限
             form: {
                 startTime: '',
+                startTimeEnd: '',
                 endTime: '',
+                endTimeEnd: '',
             },
             state: 1,
             total:1,
@@ -102,13 +110,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -119,12 +129,13 @@ export default {
         onSubmit() {
             // console.log(this.form)
             // console.log(this.state)
-            axios.get(common.apidomain + "/order/stateOerder.action?startTime=" + this.form.startTime + '&endTime=' + this.form.endTime +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id")) + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
+            axios.get(common.apidomain + "/order/stateOerder.action?startTime=" + this.form.startTime + '&startTimeEnd=' + this.form.startTimeEnd+ '&endTime=' + this.form.endTime+ '&endTimeEnd=' + this.form.endTimeEnd +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id")) + '&pageIndex=' + this.pagingNowNumberList).then((res) => {
                 // console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
                     });
+                    this.tableData = res.data.data.datas;   //表格数据
                     return false;
                 } {
                     this.$message.success('查询成功~~');
@@ -177,7 +188,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/order/stateOerder.action?pageIndex=" + `${val}` + "&startTime=" + this.form.startTime + '&endTime=' + this.form.endTime +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+            axios.get(common.apidomain + "/order/stateOerder.action?pageIndex=" + `${val}` + "&startTime=" + this.form.startTime + "&startTimeEnd=" + this.form.startTimeEnd + '&endTime=' + this.form.endTime+ '&endTimeEnd=' + this.form.endTimeEnd +"&state=2"+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

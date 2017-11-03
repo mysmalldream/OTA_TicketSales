@@ -2,7 +2,7 @@
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-loading"></i> 欢迎页</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-caret-right"></i> 欢迎页</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="ms-doc">
@@ -10,7 +10,7 @@
         </div>
 		<p>易旅通后台管理系统</p>
         <div class="center">
-      <vue-core-image-upload
+      <!-- <vue-core-image-upload
         class="btn btn-primary"
         :crop="false"
         @imageuploaded="imageUploded"
@@ -18,7 +18,7 @@
         :multiple="true"
         :multiple-size="4"
         url="http://192.168.1.109:8080/TicketSales/view/add.action" >
-      </vue-core-image-upload>
+      </vue-core-image-upload> -->
     </div>
     <!-- <table class="m-table bordered">
       <thead>
@@ -47,10 +47,26 @@ import VueCoreImageUpload from 'vue-core-image-upload'
         },
         data: function(){
             return {
+                power:false,               //是否显示增删改的按钮权限
                 fileList: [],
             }
         },
+    created() {
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
+    },
         methods:{
+        getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else if(powerId==1){
+                    this.power=false;
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
+                    this.$router.push({path:'/login'});
+                }
+        },
             imageUploded(res) {
             if(res.errcode == 0) {
                 this.fileList = res.data;

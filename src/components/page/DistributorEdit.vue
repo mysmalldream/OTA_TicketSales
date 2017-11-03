@@ -67,6 +67,7 @@ export default {
     },
     data: function() {
         return {
+            power:false,               //是否显示增删改的按钮权限
             val:'',
             currentPage: 1,           //当前页码数
             form: {
@@ -101,9 +102,21 @@ export default {
     created() {
         this.getEdit();
         this.getAddress();
+        this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-
+        getPowerId(){
+            var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
+                if(powerId==0){
+                    this.power=true;
+                }else if(powerId==1){
+                    this.power=false;
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
+                    this.$router.push({path:'/login'});
+                }
+        },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },

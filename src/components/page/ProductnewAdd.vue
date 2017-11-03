@@ -9,7 +9,7 @@
         </div>
         <div class="form-box">
             <el-form ref="form" :model="form" label-width="120px">
-                <el-form-item label="票名" prop="name" :rules="[{ required: true, message: '票名不能为空'}]">
+                <el-form-item label="产品名称" prop="name" :rules="[{ required: true, message: '票名不能为空'}]">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="所属景区" prop="viewName" :rules="[{ required: true, message: '所属景区不能为空'}]">
@@ -42,7 +42,7 @@
                 </el-form-item>
                 <el-form-item label="票型" prop="ticketType" :rules="[{ required: true, message: '票型不能为空'}]">
                     <el-select v-model="form.ticketType" placeholder="请选择" @change="handleChange4">
-                        <el-option v-for="item in ticketType" :key="item.name" :label="item.name" :value="item"></el-option>
+                        <el-option v-for="item in ticketType" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="开始日期" prop="startTime" :rules="[{ required: true, message: '起止日期不能为空'}]">
@@ -91,8 +91,8 @@
                                 </el-select>
                      </el-form-item> -->
                 <el-form-item label="分销商列表" prop="customName" :rules="[{ required: true, message: '分销商列表不能为空'}]">
-                    <el-select v-model="form.customName" multiple placeholder="请选择" @change="handleChange6">
-                        <el-option v-for="item in custom" :key="item.id" :label="item.name" :value="item"></el-option>
+                    <el-select v-model="form.customName"  placeholder="请选择" @change="handleChange6">
+                        <el-option v-for="item in custom" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" prop="viewId">
@@ -141,7 +141,8 @@ export default {
                 viewId: '',
                 priorityId: '',
                 supplierId: '',
-                customName: ''
+                customName: '',
+                customId:'',
             },
             view: [],
             supplier: [],
@@ -160,13 +161,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -184,7 +187,8 @@ export default {
         },
         getAddress() {
             axios.get(common.apidomain + "/product/addUI.action").then((res) => {
-                // console.log(res.data);
+                console.log(res.data);
+                console.log(res.data.data.ticketType);
                 this.view = res.data.data.view;    //所属景区
                 this.supplier = res.data.data.supplier;    //供应商
                 this.typeList = res.data.data.typeList;    //门票类型
@@ -205,34 +209,37 @@ export default {
             this.ticketId = value;
         },
         handleChange4(value) {
-            // this.form.priorityId = value;
+            console.log(value)
+            this.form.ticketType = value;
         },
-        handleChange5(value) {
+        handleChange5(value) {         //
+            // console.log(value)
             this.form.priorityId = value;
         },
         handleChange6(value) {           //
-        console.log(value)
-            var strId = "";
-            var strName = "";
-            value.forEach(function(values, index, array) {
-                strId += values.id + ',';
-                strName += values.name + ',';
-            });
+            console.log(value)
+            this.form.customId = value;
+            // var strId = "";
+            // var strName = "";
+            // value.forEach(function(values, index, array) {
+            //     strId += values.id + ',';
+            //     strName += values.name + ',';
+            // });
             // console.log(strId)
             // console.log(strName)
-            this.customId = strId; 
-            this.customer = strName; 
+            // this.customId = strId; 
+            // this.customer = strName; 
             // console.log(this.customId)
             
         },
         //新增提交
         onSubmit(formName) {
             console.log(this.form)
-            console.log(this.customer)
+            // console.log(this.customer)
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post(common.apidomain + "/product/add.action?name=" + this.form.name + "&viewName=" + this.form.viewName + "&supplierName=" + this.form.supplierName + "&endPrice=" + this.form.endPrice + "&marketPrice=" + this.form.marketPrice + "&type=" + this.form.type + "&ticketType=" + this.form.ticketType + "&startTime=" + this.form.startTime + "&endTime=" + this.form.endTime + "&dailySale=" + this.form.dailySale + "&num=" + this.form.num + "&orderTime=" + this.form.orderTime + "&notice=" + this.form.notice + "&costInside=" + this.form.costInside + "&costOutside=" + this.form.costOutside + "&remark=" + this.form.remark + "&userType=" + this.form.userType + "&priorityId=" + this.form.priorityId + "&customPro=" + this.customer+ "&customId=" + this.customId + "&isSale=" + this.form.isSale + "&isCancel=" + this.form.isCancel + "&viewId=" + this.form.viewId + "&supplierId=" + this.form.supplierId + "&method=" + this.form.method).then((res) => {
-                        console.log(res.data)
+                    axios.post(common.apidomain + "/product/add.action?name=" + this.form.name + "&viewName=" + this.form.viewName + "&supplierName=" + this.form.supplierName + "&endPrice=" + this.form.endPrice + "&marketPrice=" + this.form.marketPrice + "&type=" + this.form.type + "&ticketType=" + this.form.ticketType + "&startTime=" + this.form.startTime + "&endTime=" + this.form.endTime + "&dailySale=" + this.form.dailySale + "&num=" + this.form.num + "&orderTime=" + this.form.orderTime + "&notice=" + this.form.notice + "&costInside=" + this.form.costInside + "&costOutside=" + this.form.costOutside + "&remark=" + this.form.remark + "&userType=" + this.form.userType + "&priorityId=" + this.form.priorityId + "&customPro=" + this.customer+ "&customId=" + this.form.customId + "&isSale=" + this.form.isSale + "&isCancel=" + this.form.isCancel + "&viewId=" + this.form.viewId + "&supplierId=" + this.form.supplierId + "&method=" + this.form.method).then((res) => {
+                        // console.log(res.data)
                         // console.log(res.data.data.currPage)
                         this.tableData = res.data.data;   //表格数据
                         this.currentPage = res.data.data.currPage;

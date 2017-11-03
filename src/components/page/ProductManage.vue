@@ -35,8 +35,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="票型" prop="ticketType">
-                    <el-select v-model="form.ticketType" placeholder="请选择票型">
-                        <el-option v-for="item in ticketType" :key="item.id" :label="item.id" :value="item"></el-option>
+                    <el-select v-model="form.ticketType" placeholder="请选择票型" @change="change1">
+                        <el-option v-for="item in ticketType" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="结算价" prop="endPrice">
@@ -64,6 +64,8 @@
             <el-table-column align=center prop="endPrice" label="结算价">
             </el-table-column>
             <el-table-column align=center prop="marketPrice" label="门市价">
+            </el-table-column>
+            <el-table-column align=center prop="salePrice" label="销售价">
             </el-table-column>
             <el-table-column align=center prop="priorityType" label="优先级分类">
             </el-table-column>
@@ -135,15 +137,21 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
+        },
+        change1(value){
+            // console.log(value)
+            this.form.ticketType=value;
         },
         //查询数据
         handleChange1(value) {   //logic
@@ -157,6 +165,7 @@ export default {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
                     });
+                    this.tableData = res.data.data.datas;   //表格数据
                     return false;
                 } {
                     this.$message.success('查询成功~~');
@@ -195,7 +204,7 @@ export default {
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
-                // console.log(res.data.data);
+                console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数

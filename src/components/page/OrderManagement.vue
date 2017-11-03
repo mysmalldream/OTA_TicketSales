@@ -9,10 +9,25 @@
         </div>
         <div class="form-box">
             <el-form ref="form" :inline="true" :model="form" label-width="100px">
-                <el-form-item label="分销商编号" prop="orderId">
+                <!-- <el-form-item label="核销日期" prop="verDate">
+                    <el-input type="date" v-model="form.verDate"></el-input>
+                </el-form-item> -->
+                <el-form-item label="出游日期" prop="useDate">
+                    <el-input type="date" v-model="form.useDate"></el-input>
+                </el-form-item>___
+                <el-form-item label="" prop="useDateEnd">
+                    <el-input type="date" v-model="form.useDateEnd"></el-input>
+                </el-form-item>
+                <el-form-item label="下单日期" prop="useDateEnd">
+                    <el-input type="date" v-model="form.createDate"></el-input>
+                </el-form-item>___
+                <el-form-item label="" prop="createDateEnd">
+                    <el-input type="date" v-model="form.createDateEnd"></el-input>
+                </el-form-item>
+                <el-form-item label="订单编号" prop="orderId">
                     <el-input v-model="form.orderId" placeholder=""></el-input>
                 </el-form-item>
-                <el-form-item label="分销商名称" prop="view">
+                <el-form-item label="景区名称" prop="view">
                     <el-input v-model="form.view"></el-input>
                 </el-form-item>
                 <el-form-item label="产品名称" prop="product">
@@ -91,6 +106,11 @@ export default {
         return {
             power:false,               //是否显示增删改的按钮权限
             form: {
+                verDate: '',
+                useDate: '',
+                useDateEnd:'',
+                createDate: '',
+                createDateEnd: '',
                 orderId: '',
                 view: '',
                 product: '',
@@ -133,13 +153,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -151,12 +173,13 @@ export default {
         onSubmit() {
             console.log(this.form)
             console.log(this.statess)
-            axios.get(common.apidomain + "/order/findPageData.action?orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier  + '&state=' + this.statess + '&pageIndex=' + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+            axios.get(common.apidomain + "/order/findPageData.action?orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier + '&verDate=' + this.form.verDate + '&useDate=' + this.form.useDate+ '&useDateEnd=' + this.form.useDateEnd + '&createDate=' + this.form.createDate+ '&createDateEnd=' + this.form.createDateEnd  + '&state=' + this.statess + '&pageIndex=' + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 console.log(res.data);
                 if (res.data.code == 0) {
                     this.$message({
                         message: '暂未查询到数据,请重新查询~', type: 'warning'
                     });
+                    this.tableData = res.data.data.datas;   //表格数据
                     return false;
                 } {
                     this.$message.success('查询成功~~');
@@ -218,7 +241,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + `${val}` + "&orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier+ '&state=' + this.statess+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+            axios.get(common.apidomain + "/order/findPageData.action?pageIndex=" + `${val}` + "&orderId=" + this.form.orderId + '&view=' + this.form.view + '&product=' + this.form.product + '&custom=' + this.form.custom + '&supplier=' + this.form.supplier+ '&verDate=' + this.form.verDate + '&useDate=' + this.form.useDate+ '&useDateEnd=' + this.form.useDateEnd + '&createDate=' + this.form.createDate+ '&createDateEnd=' + this.form.createDateEnd+'&state=' + this.statess+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数

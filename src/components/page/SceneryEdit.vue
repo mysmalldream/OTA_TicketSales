@@ -59,14 +59,15 @@
             <textarea id="selfRoute" cols="50" rows="4" name="selfRoute" placeholder="在这里输入内容..." ></textarea>
             <br>
             <hr>
-            <ul class="pic">
+            <ul class="pic" style="list-style: none;display:flex;">
                 <!-- 123111 -->
                 <!-- <li><img id="pics" src=""></li> -->
             </ul>
             
             <label for="file">上传图片:</label>
-            <input type="file" name="file" multiple="multiple" required="required" id="file"/>
-            <br>
+            <input type="file" name="file" multiple="multiple" required="required" id="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg,image/bmp"/>
+            <div><el-tag type="success">★注意★:请重新上传图片,图片文件的格式只能是.gif,.jpeg,.jpg,.png,.svg,.bmp</el-tag></div>
+            <!-- <br> -->
             <label for="staffId">业务人员:</label>
             <!-- staffId  staffName -->
             <select id="staff" name="staffId" v-model="form.staffName">
@@ -162,7 +163,7 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
@@ -217,7 +218,7 @@ export default {
         },
         map(){
             var ids=this.$route.query.id;  //当前产品的id   修改输入框回显
-            var type = '', level = '', staff = '', province = '', city = '',imgs;
+            var type = '', level = '', staff = '', province = '', city = '',imgs='',arr=[];
                 $(function () {
                     $.ajax({
                     type: "get",
@@ -227,11 +228,39 @@ export default {
                         // console.log(data)
                         console.log(data.data.pic);
                         data.data.pic.forEach(function (v,i){
-                            console.log(v)
-                            imgs+="<li><img id='pics' src="+v+"></li>";
+                            // console.log(v)
+                            imgs +="<li style='margin-right:5px;'><img style='width:100%;flex: 1;' id='pics' src="+v+"></li>";
                         })
-                        console.log(imgs)
-                        // $('.pic').append(imgs);
+                        // console.log($('.pic li '))
+                        $('.pic').append(imgs);
+                        // $('.pic li').on("click",function (){
+                        //     // console.log(this)
+                        //     console.log("当前的索引"+$(this).index())
+                        //     // console.log("原来数组长度"+data.data.pic.length)
+                        //     data.data.pic.splice($(this).index(), 0)
+                        //     // data.data.pic.splice()
+                        //     // console.log("删除的元素"+data.data.pic.splice($(this).index(), 0))
+                        //     console.log("新数组"+data.data.pic)
+                            
+                        //     // data.data.pic.forEach(function (v,i){
+                        //     //     imgs +="<li style='margin-right:5px;'><img style='width:100%;flex: 1;' id='pics' src="+v+"></li>";
+                        //     // })
+                        //     // $('.pic').append(imgs);
+                        //     // console.log("新数组长度"+data.data.pic.length)
+                            
+                        //     // for(var i=0; i<data.data.pic.length; i++) {
+                        //     //     if(this[i] == $(this).index()) {
+                        //     //     this.splice(i, 1);
+                        //     //     break;
+                        //     //     }
+                        //     // }
+                        //     // console.log(data.data.pic.splice($(this).index(), 1))
+                        //     // console.log(data.data.pic)
+                        //     // return;    
+                        // })
+                            // console.log(1111)
+                            // console.log(data.data.pic)
+                            
                         this.piclists=data.data.pic;
                         $('#id').val(data.data.id)
                         $('#name').val(data.data.name)
@@ -463,6 +492,7 @@ input,select{
 }
 .pic li{
     display: inline-block;
+    list-style: none;
 }
 .pic span img{
     width: 100px;

@@ -183,12 +183,12 @@ export default {
                 //         }
                 //     ]
                 // },
-                {
-                    icon: 'el-icon-star-on',
-                    // index: 'basecharts',
-                    index: '',
-                    title: '统计'
-                },
+                // {
+                //     icon: 'el-icon-star-on',
+                //     // index: 'basecharts',
+                //     index: '',
+                //     title: '统计'
+                // },
             ]
         }
     },
@@ -197,12 +197,21 @@ export default {
     },
     methods: {
         getPowerId(){
-            // console.log(this.items[3].subs)
+            // console.log(this.items[5].subs)
             // console.log(this.items[3].subs[1].hidden)
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.items[4].hidden=true;
-                }else{
+                }else if(powerId==2){
+                    this.items[4].hidden=false;
+
+                    this.items[5].subs[1].hidden=true;    //分销商管理
+                    this.items[5].subs[2].hidden=false;
+
+                    this.items[2].subs[1].hidden=false;    //景区管理新增
+                    this.items[3].subs[1].hidden=true;    //产品信息管理新增
+
+                }else if(powerId==1){
                     this.items[4].hidden=false;
 
                     this.items[5].subs[1].hidden=false;    //分销商管理
@@ -210,8 +219,6 @@ export default {
 
                     this.items[2].subs[1].hidden=false;    //景区管理新增
                     this.items[3].subs[1].hidden=false;    //产品信息管理新增
-                    
-
                 }
         }
     },

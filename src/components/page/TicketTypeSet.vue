@@ -22,6 +22,7 @@
                         <el-input v-model.number="form.condYuan" auto-complete="off" placeholder="请输入加价金额"></el-input>
                     </el-form-item>
                 </el-form>
+                <el-tag type="danger">★加价率与加价金额都存在的时候,加价金额优先参与计算★</el-tag>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
                     <el-button type="primary" @click="submitForm('numberValidateForm')">提 交</el-button>
@@ -52,6 +53,7 @@
                                 <el-input v-model.number="form.condYuan" auto-complete="off" placeholder="请输入加价金额"></el-input>
                             </el-form-item>
                         </el-form>
+                <el-tag type="danger">★加价率与加价金额都存在的时候,加价金额优先参与计算★</el-tag>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible1 = false">取 消</el-button>
                             <el-button type="primary" @click="submitFormEditUI('numberValidateFormEditUI')">提 交</el-button>
@@ -109,13 +111,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=false;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },

@@ -57,8 +57,9 @@
             <br>
             <hr>
             <label for="file">上传图片:</label>
-            <input type="file" name="file" multiple="multiple" required="required" id="file"/>
-            <br>
+            <input type="file" name="file" multiple="multiple" required="required" id="file" accept="image/*"/>
+            <div><el-tag type="success">图片文件的格式只能是.gif,.jpeg,.jpg,.png,.svg,.bmp</el-tag></div>
+            <!-- <br> -->
             <label for="staffId">业务人员:</label>
             <!-- staffId  staffName -->
             <select id="staff" name="staffId">
@@ -154,13 +155,15 @@ export default {
 
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },

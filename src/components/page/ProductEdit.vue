@@ -31,6 +31,9 @@
                 <el-form-item label="门市价" prop="marketPrice" :rules="[{ required: true, message: '门市价不能为空'}]">
                     <el-input type="number" v-model="form.marketPrice"></el-input>
                 </el-form-item>
+                <el-form-item label="销售价" prop="salePrice" :rules="[{ required: true, message: '销售价不能为空'}]">
+                    <el-input type="number" v-model="form.salePrice"></el-input>
+                </el-form-item>
                 <el-form-item label="是否销售" prop="isSale">
                     <el-switch v-model="form.isSale" on-text="是" off-text="否" on-color="#13ce66" off-color="#ff4949" on-value="是" off-value="否" @change="switch1">
                     </el-switch>
@@ -94,8 +97,8 @@
                                 </el-select>
                      </el-form-item> -->
                 <el-form-item label="分销商列表" prop="customName" :rules="[{ required: true, message: '分销商列表不能为空'}]">
-                    <el-select v-model="form.customName" multiple placeholder="请重新选择" @change="handleChange6">
-                        <el-option v-for="item in custom" :key="item.id" :label="item.name" :value="item"></el-option>
+                    <el-select v-model="form.customName"  placeholder="请重新选择" @change="handleChange6">
+                        <el-option v-for="item in custom" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" prop="viewId">
@@ -125,6 +128,7 @@ export default {
                 supplierName: '',
                 endPrice: '',
                 marketPrice: '',
+                salePrice:'',
                 isSale: '',
                 type: '',
                 ticketType: '',
@@ -145,7 +149,8 @@ export default {
                 viewId: '',
                 priorityId: '',
                 supplierId: '',
-                customName: ''
+                customName: '',
+                customId:'',
             },
             view: [],
             supplier: [],
@@ -168,13 +173,15 @@ export default {
         this.getPowerId()   //根据用户权限加载相应的用户左侧菜单栏
     },
     methods: {
-       getPowerId(){
+        getPowerId(){
             var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if(powerId==0){
                     this.power=true;
                 }else if(powerId==1){
                     this.power=false;
-                }else{  
+                }else if(powerId==2){  
+                    this.power=true;
+                }else{
                     this.$router.push({path:'/login'});
                 }
         },
@@ -215,6 +222,7 @@ export default {
                 this.form.supplierName=res.data.data.supplierName;
                 this.form.endPrice=res.data.data.endPrice;
                 this.form.marketPrice=res.data.data.marketPrice;
+                this.form.salePrice=res.data.data.salePrice;
                 this.form.isSale=res.data.data.isSale;
                 this.form.type=res.data.data.type;
                 this.form.num=res.data.data.num;
@@ -257,30 +265,30 @@ export default {
         },
         handleChange6(value) {           //
             console.log(value)
-        
-           var strId = "";
-            var strName = "";
-            value.forEach(function(values, index, array) {
-                strId += values.id + ',';
-                strName += values.name + ',';
-            });
-            console.log(strId)
-            this.customId = strId; 
-            this.customer = strName;
+            this.form.customId = value;
+        //    var strId = "";
+        //     var strName = "";
+        //     value.forEach(function(values, index, array) {
+        //         strId += values.id + ',';
+        //         strName += values.name + ',';
+        //     });
+        //     console.log(strId)
+        //     this.customId = strId; 
+        //     this.customer = strName;
         },
         //修改提交
         onSubmit(formName) {
-            console.log(this.form)
-            console.log(this.form.viewId)   //  id
-            console.log(this.form.supplierId)   //  id 
-            console.log(this.form.priorityId)   //  id
-            console.log("----------")   
-            console.log(this.viewId)   //  id
-            console.log(this.supplierId)   //  id 
-            console.log(this.priorityId)   //  id  
+            // console.log(this.form)
+            // console.log(this.form.viewId)   //  id
+            // console.log(this.form.supplierId)   //  id 
+            // console.log(this.form.priorityId)   //  id
+            // console.log("----------")   
+            // console.log(this.viewId)   //  id
+            // console.log(this.supplierId)   //  id 
+            // console.log(this.priorityId)   //  id  
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post(common.apidomain + "/product/edit.action?name=" + this.form.name + "&viewName=" + this.form.viewName + "&supplierName=" + this.form.supplierName + "&endPrice=" + this.form.endPrice + "&marketPrice=" + this.form.marketPrice + "&type=" + this.form.type + "&ticketType=" + this.form.ticketType + "&startTime=" + this.form.startTime + "&endTime=" + this.form.endTime + "&dailySale=" + this.form.dailySale + "&num=" + this.form.num + "&orderTime=" + this.form.orderTime + "&notice=" + this.form.notice + "&costInside=" + this.form.costInside + "&costOutside=" + this.form.costOutside + "&remark=" + this.form.remark + "&userType=" + this.form.userType  + "&customPro=" + this.customer + "&customId=" + this.customId+ "&isSale=" + this.form.isSale + "&isCancel=" + this.form.isCancel + "&viewId=" + this.viewId + "&supplierId=" + this.supplierId + "&priorityId=" + this.form.priorityId + "&method=" + this.form.method+ "&id=" + this.form.id).then((res) => {
+                    axios.post(common.apidomain + "/product/edit.action?name=" + this.form.name + "&viewName=" + this.form.viewName + "&supplierName=" + this.form.supplierName + "&endPrice=" + this.form.endPrice + "&marketPrice=" + this.form.marketPrice + "&type=" + this.form.type + "&ticketType=" + this.form.ticketType + "&startTime=" + this.form.startTime + "&endTime=" + this.form.endTime + "&dailySale=" + this.form.dailySale + "&num=" + this.form.num + "&orderTime=" + this.form.orderTime + "&notice=" + this.form.notice + "&costInside=" + this.form.costInside + "&costOutside=" + this.form.costOutside + "&remark=" + this.form.remark + "&userType=" + this.form.userType  + "&customPro=" + this.customer + "&customId=" + this.form.customId+ "&isSale=" + this.form.isSale + "&isCancel=" + this.form.isCancel + "&viewId=" + this.viewId + "&supplierId=" + this.supplierId + "&priorityId=" + this.form.priorityId + "&method=" + this.form.method+ "&id=" + this.form.id).then((res) => {
                         // console.log(res.data)
                         this.tableData = res.data.data;   //表格数据
                         // this.currentPage = res.data.data.currPage;
