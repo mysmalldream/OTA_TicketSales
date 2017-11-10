@@ -102,7 +102,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            axios.get(common.apidomain + "/product/findPageData.action?pageIndex=" + `${val}`).then((res) => {
+            axios.get(common.apidomain + "/custom/checkUI.action?pageIndex=" + `${val}`).then((res) => {
                 // console.log(res.data.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
