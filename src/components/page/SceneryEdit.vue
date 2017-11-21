@@ -299,19 +299,19 @@ export default {
                 var form = new FormData(document.getElementById("forms"));
                 console.log(32143255675654)
                 console.log(form)
-            //  $.ajax({
-            //     url:common.apidomain+"/view/edit.action?id="+$('#id').val(),
-            //     type:"post",
-            //     data:form,
-            //     processData:false,
-            //     contentType:false,
-            //     success:function(data){
-            //         // console.log(data);
-            //     },
-            //     error:function(e){
-            //         console.log(e);
-            //     }
-            // });        
+             $.ajax({
+                url:common.apidomain+"/view/edit.action?id="+$('#id').val(),
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });        
             this.$message({showClose: true,message: '恭喜你，新增成功~,请点击最后一页查看新增数据~',type: 'success'});
             this.$router.push({ path: './SceneryManage' });
             }

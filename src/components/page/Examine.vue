@@ -14,6 +14,23 @@
             </el-table-column>
             <el-table-column align=center prop="name" label="分销商名称">
             </el-table-column>
+            <el-table-column align=center prop="card" label="分销商证件">
+
+                <template scope="scope">
+                    <el-button  @click="dialogVisible = true,looks(scope.$index, scope.row)" size="small" >查看</el-button>
+                    <el-dialog
+                        title="分销商证件查看"
+                        :visible.sync="dialogVisible"
+                        size="tiny">
+                        <img v-for="item in listsPic" :id='item.id' :src='item' v-bind:key="item.id"  alt="" style="width:80%;height:40%;" >
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                        </span>
+                    </el-dialog>
+                </template>
+
+            </el-table-column>
             <el-table-column align=center prop="typeName" label="分销商类别">
             </el-table-column>
             <el-table-column align=center prop="level" label="分销商等级">
@@ -65,7 +82,9 @@ export default {
             powerId: 1,
             multipleSelection: [],
             indexs:[],
-            strs:''                //被选中元素id组成的集合
+            strs:'',                //被选中元素id组成的集合
+            dialogVisible: false ,  //分销商证件弹窗
+            listsPic:[]
         }
     },
     created() {
@@ -88,13 +107,19 @@ export default {
         //数据的初次加载
         getimgs() {
             axios.get(common.apidomain + "/custom/checkUI.action?pageIndex=" + this.pagingNowNumberList).then((res) => {
-                // console.log(res.data.data);
+                console.log(res.data.data.datas);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
                 this.pagingNowNumberList = res.data.data.currPage;   //当前页码数
                 this.loading = false;
             })
+        },
+                    //查看分销商证件
+        looks(index, row){
+            // console.log(row.fileList[0]);
+            this.listsPic=row.fileList;
+            // console.log(this.listsPic);
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);

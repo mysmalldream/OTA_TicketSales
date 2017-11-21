@@ -188,6 +188,7 @@ export default {
             this.form.condPercent = row.condPercent;
             this.form.condYuan = row.condYuan
         },
+
         submitFormEditUI(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {

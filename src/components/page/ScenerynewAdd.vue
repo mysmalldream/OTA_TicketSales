@@ -213,6 +213,7 @@ export default {
         },
         button(){
             // console.log("开始提交")
+            console.log(this.form);
             if($('#name').val()==''){
             this.$message({showClose: true,message: '景区名称不能有空',type: 'warning'});
             }else if($('#remark').val()==''){
@@ -237,7 +238,7 @@ export default {
                 processData:false,
                 contentType:false,
                 success:function(data){
-                    // console.log(data);
+                    console.log(data);
                 },
                 error:function(e){
                     console.log(e);
@@ -300,37 +301,37 @@ export default {
             console.log(this.form)
             console.log(this.form.file)
             
-            // this.$refs[formName].validate((valid) => {
-            //     if (valid) {
-            //         axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
-            //             // console.log(res.data)
-            //             // console.log(res.data.data.currPage)
-            //             // this.tableData = res.data.data;   //表格数据
-            //             this.currentPage = res.data.data.currPage;
-            //             this.codesID = res.data.code;
-            //             if (this.codesID === 0) {    //参数错误
-            //                 this.$message({
-            //                     message: "参数错误,请重试~",
-            //                     type: 'warning'
-            //                 });
-            //                 this.getimgs();
-            //                 return;
-            //             } else {
-            //                 this.$message({
-            //                     message: '添加成功!,请点击最后一页查看新增数据~~',
-            //                     type: 'success'
-            //                 });
-            //                 this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
-            //             }
-            //         })
-            //     } else {
-            //         this.$message({
-            //             message: '参数错误,请检查后重新输入~~',
-            //             type: 'warning'
-            //         });
-            //         return false;
-            //     }
-            // });
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    axios.post(common.apidomain + "/view/add.action?name=" + this.form.name + "&type=" + this.form.type + "&level=" + this.form.level + "&remark=" + this.form.remark + "&address=" + this.form.address + "&businessTime=" + this.form.businessTime + "&phone=" + this.form.phone + "&reminder=" + this.form.reminder + "&discount=" + this.form.discount + "&busMessage=" + this.form.busMessage + "&selfRoute=" + this.form.selfRoute + "&file=" + this.form.file + "&staffId=" + this.form.staff.id + "&staffName=" + this.form.staff.name + "&province=" + this.form.province + "&city=" + this.form.city + "&sort=" + this.form.sort + "&lng=" + this.dragData.lng + "&lat=" + this.dragData.lat).then((res) => {
+                        // console.log(res.data)
+                        // console.log(res.data.data.currPage)
+                        // this.tableData = res.data.data;   //表格数据
+                        this.currentPage = res.data.data.currPage;
+                        this.codesID = res.data.code;
+                        if (this.codesID === 0) {    //参数错误
+                            this.$message({
+                                message: "参数错误,请重试~",
+                                type: 'warning'
+                            });
+                            this.getimgs();
+                            return;
+                        } else {
+                            this.$message({
+                                message: '添加成功!,请点击最后一页查看新增数据~~',
+                                type: 'success'
+                            });
+                            this.$router.push({ path: './SceneryManage', params: { currentPage: this.currentPage } });
+                        }
+                    })
+                } else {
+                    this.$message({
+                        message: '参数错误,请检查后重新输入~~',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+            });
         },
     }
 }
