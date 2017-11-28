@@ -117,7 +117,7 @@ export default {
         },
                     //查看分销商证件
         looks(index, row){
-            // console.log(row.fileList[0]);
+            console.log(row.fileList[0]);
             this.listsPic=row.fileList;
             // console.log(this.listsPic);
         },

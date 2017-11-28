@@ -86,6 +86,8 @@ import common from '../../kits/commonapi.js';   //公共域名文件
         position: relative;
         width:100%;
         height:100%;
+        background: url(../../assets/bg.jpg);
+        background-size: 100%;
     }
     .ms-title{
         position: absolute;
@@ -95,19 +97,19 @@ import common from '../../kits/commonapi.js';   //公共域名文件
         text-align: center;
         font-size:30px;
         color: #fff;
-
+        text-align: center;
     }
     .ms-login{
         position: absolute;
         left:50%;
         top:50%;
-        width:300px;
+        width:400px;
         height:160px;
-        margin:-150px 0 0 -190px;
+        margin:-150px 0 0 -235px;
         padding:40px;
         border-radius: 5px;
-        background: #fff;
-        box-shadow: 0px 0px 23px 6px #0CC inset;    
+        background: rgba(0,0,0,0.3);
+        /* box-shadow: 0px 0px 23px 6px #0CC inset;*/
 
     }
     .login-btn{

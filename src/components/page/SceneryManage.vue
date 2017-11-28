@@ -209,10 +209,10 @@ export default {
         },
         //数据的初次加载
         getimgs() {
-            console.log(JSON.parse(window.sessionStorage.getItem("id")))    //3
-            console.log(JSON.parse(window.sessionStorage.getItem("powerId")))  //0
+            // console.log(JSON.parse(window.sessionStorage.getItem("id")))    //3
+            // console.log(JSON.parse(window.sessionStorage.getItem("powerId")))  //0
             axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
-                // console.log(res.data);
+                    console.log(res.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
                 this.pageCount = res.data.data.pageCount;   //总的页码数
