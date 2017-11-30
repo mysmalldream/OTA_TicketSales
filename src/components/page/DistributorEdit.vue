@@ -130,7 +130,7 @@ export default {
         },
         getEdit(){    //修改下拉回显
              axios.get(common.apidomain + "/custom/editUI.action?id="+this.$route.query.id).then((res) => {
-                //  console.log(res.data)
+                 console.log(res.data)
             })
         },
         getAddress() {

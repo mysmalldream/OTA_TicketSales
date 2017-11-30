@@ -40,8 +40,16 @@ import common from '../../kits/commonapi.js';   //公共域名文件
                 }
             }
         },
+        created(){
+            this.loadings();
+        },
         methods: {
-            
+            loadings(){
+                if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+                // alert(4321432)
+                this.$message.warning('亲,为了您能有一个好的体验,请使用电脑访问本页面');
+                }
+            },
             submitForm(formName) {
                 const self = this;
                 self.$refs[formName].validate((valid) => {

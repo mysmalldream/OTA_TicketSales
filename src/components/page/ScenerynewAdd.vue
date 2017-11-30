@@ -17,15 +17,15 @@
             <el-tag type="success">[★小贴士★]输入景区名称或拖动地图以选择景区位置~</el-tag>
             <div class="map">
                 <div>
-                    <b>经度：</b>
-                    <input type="text" name="lng" id="lng" disabled value="0" required="required" />
-                    <b>纬度：</b>
-                    <input type="text" name="lat" id="lat" disabled value="0" required="required" />
+                    <span style="color:red;">*</span> <b>经度：</b>
+                    <input type="text" name="lng" id="lng"  value="0"  required="required" />
+                    <span style="color:red;">*</span> <b>纬度：</b>
+                    <input type="text" name="lat" id="lat"  value="0" required="required" />
                 </div>
             </div>
             <div>
                 <b>详细地址:</b>
-                <span>1</span>{{ dragData.address }}</div>
+                {{ dragData.address }}</div>
             <div class="m-part">
                 <mapDrag @drag="dragMap" class="mapbox"></mapDrag>
             </div>

@@ -221,7 +221,7 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            getEdit() {
+            getEdit() {    
                 axios.get(common.apidomain + "/product/addUI.action").then((res) => {
                     // console.log(res.data);
                     this.view = res.data.data.view; //所属景区

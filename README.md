@@ -1,3 +1,10 @@
+--	Version 1.2.1 景区管理新增景区页面添加加载动画
+--	Version 1.3.1 景区管理新增/修改景区经纬度添加不上的问题,修改景区重新上传图片和选择业务人员验证不为空.
+
+
+
+
+
 # manage-system #
 基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://blog.gdfengshuo.com/example/work/)
 

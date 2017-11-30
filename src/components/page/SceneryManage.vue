@@ -72,7 +72,7 @@
             </el-table-column>
             <el-table-column align=center prop="sort" label="景区排序">
             </el-table-column>
-            <el-table-column align=center prop="businessTime" label="营业时间">
+            <el-table-column align=center prop="businessTime" label="营业时间" width="200px" show-overflow-tooltip>
             </el-table-column>
             <el-table-column align=center prop="staffName" label="景区负责人">
             </el-table-column>
