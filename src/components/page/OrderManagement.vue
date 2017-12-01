@@ -198,8 +198,8 @@ export default {
             let vm = this;
             require.ensure([], () => {
                 const { export_json_to_excel } = require('../../vendor/Export2Excel');
-                const tHeader = ['分销商编号', '分销商名称', '分销商类别', '分销商等级', '电话', '联系人', '授信额度', '预存现金', '分销商状态'];
-                const filterVal = ['id', 'name', 'typeName', 'level', 'phone', 'linkMan', 'creditLimit', 'cashMoney', 'state',];
+                const tHeader = ['序号', '订单号', '产品名称', '分销商', '供应商', '所属景区', '支付方式', '订单状态', '数量','单价','金额'];
+                const filterVal = ['id', 'orderId', 'productName', 'custName', 'supplier', 'view', 'ispay', 'orderState', 'orderNumber','unitPrice','price',];
                 const list = this.tableData;
                 const data = this.formatJson(filterVal, list);
                 export_json_to_excel(tHeader, data, '未命名列表excel');

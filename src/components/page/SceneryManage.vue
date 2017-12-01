@@ -212,6 +212,7 @@ export default {
             // console.log(JSON.parse(window.sessionStorage.getItem("id")))    //3
             // console.log(JSON.parse(window.sessionStorage.getItem("powerId")))  //0
             axios.get(common.apidomain + "/view/findPageData.action?pageIndex=" + this.pagingNowNumberList+"&power_id="+JSON.parse(window.sessionStorage.getItem("powerId"))+"&staff_id="+JSON.parse(window.sessionStorage.getItem("id"))).then((res) => {
+                    console.log(666);
                     console.log(res.data);
                 this.tableData = res.data.data.datas;   //表格数据
                 this.total = res.data.data.allCount;    //条数
