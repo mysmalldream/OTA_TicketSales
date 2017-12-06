@@ -17,10 +17,12 @@
             <el-tag type="success">[★小贴士★]输入景区名称或拖动地图以选择景区位置~</el-tag>
             <div class="map">
                 <div>
-                    <span style="color:red;">*</span> <b>经度：</b>
-                    <input type="text" name="lng" id="lng"  value="0"  required="required" />
-                    <span style="color:red;">*</span> <b>纬度：</b>
-                    <input type="text" name="lat" id="lat"  value="0" required="required" />
+                    <span style="color:red;">*</span>
+                    <b>经度：</b>
+                    <input type="text" name="lng" id="lng" value="0" required="required" />
+                    <span style="color:red;">*</span>
+                    <b>纬度：</b>
+                    <input type="text" name="lat" id="lat" value="0" required="required" />
                 </div>
             </div>
             <div>
@@ -73,10 +75,14 @@
                 <span>* </span> 自驾线路:</label>
             <textarea cols="50" rows="4" name="selfRoute" placeholder="在这里输入内容..."></textarea>
             <br>
-            <hr>
+            <!-- <hr> -->
             <label for="file">
                 <span>* </span> 上传图片:</label>
-            <input type="file" name="file" multiple="multiple" required="required" id="file" accept="image/*" />
+                <!-- <img :src="src" ref="img">
+                <input type="file" name="file" multiple="multiple" required="required" id="file" ref="file" @change="fileChanged" accept="image/*" @click="add"/> -->
+                <input type="file" name="file" multiple="multiple" required="required" id="file"  accept="image/*" />
+
+            <!-- <uploader :src="'http://192.168.1.200:8080/interface/view/add.action'"></uploader> -->
             <div>
                 <el-tag type="success">图片文件的格式只能是.gif,.jpeg,.jpg,.png,.svg,.bmp</el-tag>
             </div>
@@ -113,6 +119,9 @@
     import axios from 'axios';
     import common from '../../kits/commonapi.js'; //公共域名文件
     import imgsUpload from '../../kits/imgUp.js'; //
+    import uploader from '../uploader/uploader.vue' // "上传图片组件
+
+
     import mapDrag from '../common/mapDrag' // "vue-loader": "^11.3.4",
     // import jQuery from '../common/jquery-3.2.1.js'  // "vue-loader": "^11.3.4",
     import $ from 'jquery'
@@ -123,8 +132,22 @@
         components: { //地图
             mapDrag
         },
+        props: {
+            // src: {
+            //     type: String,
+            //     required: true
+            // }
+        },
         data: function () {
             return {
+                src:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 
+                elInput: '',
+                status: 'ready',
+                // files: [],
+                point: {},
+                uploading: false,
+                percent: 0,
+
                 power: false, //是否显示增删改的按钮权限
                 dialogImageUrl: '',
                 dialogVisible: false,
@@ -180,6 +203,31 @@
 
         },
         methods: {
+            //////////////////////////////////////////////////////
+            add() {
+                // this.$refs.file.click()
+                console.log( this.$refs.file);
+            },
+            remove(index) {
+                this.files.splice(index, 1)
+            },
+            fileChanged(e) {
+                console.log(e)
+                console.log('变化了');
+                this.ppp();
+
+            },
+            ppp(){
+                    var file = this.files[0]; 
+                    var reader = new FileReader(); 
+                    reader.readAsDataURL(file); 
+                    console.log(reader);
+                    
+                    reader.loadend = function(e){ 
+                        result.innerHTML = '<img src="'+this.result+'" alt=""/>' 
+                    } 
+            },
+            /////////////////////////////////////////////
             getPowerId() {
                 var powerId = JSON.parse(window.sessionStorage.getItem("powerId"));
                 if (powerId == 0) {
@@ -288,7 +336,8 @@
                         type: 'warning'
                     });
                 } else {
-                    var form = new FormData(document.getElementById("forms"));
+                    //提交数据及图片
+                    var formData = new FormData(document.getElementById("forms"));
                     var _this = this;
                     //添加页面加载动画
                     const loading = this.$loading({
@@ -298,20 +347,33 @@
                         // background: 'rgba(0, 0, 0, 0.5)',
                         // target: document.querySelector('.div1')
                     });
-                    // setTimeout(() => {
-                    //     loading.close();
-                    // }, 20000000);
+                    // const formData = new FormData()
+                        // _this.files.forEach((item) => {
+                        //     formData.append(item.name, item.file)
+                        //     console.log(item);
+                        //     console.log(item.file);
+                        // })
+                        //     console.log(2222);
+                        //     // console.log(_this.files);
+                        //     console.log(formData);
+                        //     for (var [key, value] of formData.entries()) { 
+                        //         console.log(key, value);
+                        //     }
+                        //     alert(33333);
+                        //     alert(formData);
 
                     $.ajax({
                         url: common.apidomain + "/view/add.action",
                         type: "post",
-                        data: form,
-                        processData: false,
-                        contentType: false,
+                        data: formData,
+                        // async: false,  
+                        // cache: false,
+                        processData: false,      // 告诉jQuery不要去处理发送的数据
+                        contentType: false,      // 告诉jQuery不要去设置Content-Type请求头
                         success: function (data) {
                             console.log(data);
                             if (data.code == 1) {
-                                    loading.close();   //关闭加载动画
+                                loading.close(); //关闭加载动画
                                 _this.$message({
                                     showClose: true,
                                     message: '恭喜你，提交成功~,请点击最后一页查看新增数据~',
@@ -332,8 +394,6 @@
                             console.log(e);
                         }
                     });
-                    // this.$message({showClose: true,message: '恭喜你，新增成功~,请点击最后一页查看新增数据~',type: 'success'});
-                    // this.$router.push({ path: './SceneryManage' });
                 }
             },
             dragMap(data) { //地图
@@ -380,7 +440,7 @@
             },
             //新增
             onSubmit(formName) {
-                console.log(1111)
+                // console.log(1111)
                 // console.log(this.files)
                 // console.log(this.files.name)
                 // 提交表单数据
@@ -541,9 +601,126 @@
         color: red;
     }
     /* 添加页面加载动画 */
-.el-loading-mask{
-    background-color:rgba(0,0,0,0.5) !important;
-}
+
+    .el-loading-mask {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    /* 上传图片组件样式 */
+
+    .vue-uploader {
+        border: 1px solid #e5e5e5;
+        width: 100%;
+    }
+
+    .vue-uploader .file-list {
+        padding: 10px 0px;
+    }
+
+    .vue-uploader .file-list:after {
+        content: '';
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+        font-size: 0;
+    }
+
+    .vue-uploader .file-list .file-item {
+        float: left;
+        position: relative;
+        width: 100px;
+        text-align: center;
+    }
+
+    .vue-uploader .file-list .file-item img {
+        width: 80px;
+        height: 80px;
+        border: 1px solid #ececec;
+    }
+
+    .vue-uploader .file-list .file-item .file-remove {
+        position: absolute;
+        right: 12px;
+        display: none;
+        top: 4px;
+        width: 14px;
+        height: 14px;
+        color: white;
+        cursor: pointer;
+        line-height: 12px;
+        border-radius: 100%;
+        transform: rotate(45deg);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .vue-uploader .file-list .file-item:hover .file-remove {
+        display: inline;
+    }
+
+    .vue-uploader .file-list .file-item .file-name {
+        margin: 0;
+        height: 40px;
+        word-break: break-all;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .vue-uploader .add {
+        width: 80px;
+        height: 80px;
+        margin-left: 10px;
+        float: left;
+        text-align: center;
+        line-height: 80px;
+        border: 1px dashed #ececec;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .vue-uploader .upload-func {
+        display: flex;
+        padding: 10px;
+        margin: 0px;
+        background: #f8f8f8;
+        border-top: 1px solid #ececec;
+    }
+
+    .vue-uploader .upload-func .progress-bar {
+        flex-grow: 1;
+    }
+
+    .vue-uploader .upload-func .progress-bar section {
+        margin-top: 5px;
+        background: #00b4aa;
+        border-radius: 3px;
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        transition: all .5s ease;
+    }
+
+    .vue-uploader .upload-func .operation-box {
+        flex-grow: 0;
+        padding-left: 10px;
+    }
+
+    .vue-uploader .upload-func .operation-box button {
+        padding: 4px 12px;
+        color: #fff;
+        background: #007ACC;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    .vue-uploader>input[type="file"] {
+        display: none;
+    }
 
 </style>
 

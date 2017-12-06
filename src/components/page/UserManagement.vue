@@ -9,8 +9,8 @@
             </el-breadcrumb>
         </div>
         <div class="plugins-tips">
-            <el-button icon="edit" type="primary" @click="dialogFormVisible=true,newAdd()">新 增</el-button>
-            <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
+            <el-button icon="el-icon-edit" type="primary" @click="dialogFormVisible=true,newAdd()">新 增</el-button>
+            <el-dialog title="新 增" :visible.sync="dialogFormVisible" width="30%">
                 <el-form :model="form" ref="numberValidateForm">
                     <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
                         <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
@@ -54,7 +54,7 @@
             <el-table-column align=center label="操作">
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
-                    <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
+                    <el-dialog title="修 改" :visible.sync="dialogFormVisible1" width="30%">
                         <el-form :model="form" ref="numberValidateForm">
                             <el-form-item label="用户名:" :label-width="formLabelWidth" prop="loginName" :rules="[{ required: true, message: '用户名不能为空'}]">
                                 <el-input v-model="form.loginName" auto-complete="off" placeholder="请输入用户名"></el-input>
@@ -89,7 +89,7 @@
         </el-table>
         <div class="grid-content bg-purple">
             <div class="block">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
                 </el-pagination>
             </div>
         </div>

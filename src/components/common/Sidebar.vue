@@ -1,6 +1,7 @@
 <template>
     <div class="sidebar">
-        <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>
+<el-menu :default-active="onRoutes" class="el-menu-vertical-demo"  unique-opened router background-color="#2F3B4F"
+    text-color="#BAC6D4" active-text-color="#3B9BFF">
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" v-if="item.hidden">
@@ -238,10 +239,14 @@ export default {
     left: 0;
     top: 70px;
     bottom: 0;
-    background: #2E363F;
+    background: #232C3C;
 }
 
 .sidebar>ul {
     height: 100%;
+}
+.el-menu-item{
+ background-color: #232C3C !important;
+ /* background-color: #434F61 !important; */
 }
 </style>

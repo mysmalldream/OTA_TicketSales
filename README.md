@@ -8,7 +8,7 @@
 
 
 
-<!-- ![Image text](./name.jpg){:height="10%" :width="10%"} -->
+![Image text](./name.jpg)
 # manage-system #
 基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://blog.gdfengshuo.com/example/work/)
 
@@ -72,7 +72,7 @@
 
 ## 本地开发 ##
 
-	// 开启服务器，浏览器访问 http://localhost:8080
+	// 开启服务器，浏览器访问 http://localhost:8090
 	npm run dev
 
 ## 构建生产 ##

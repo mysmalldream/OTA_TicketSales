@@ -9,8 +9,8 @@
             </el-breadcrumb>
         </div>
         <div class="plugins-tips">
-            <el-button icon="edit" type="primary" @click="dialogFormVisible=true" v-if="power">新 增</el-button>
-            <el-dialog title="新 增" :visible.sync="dialogFormVisible" size="tiny">
+            <el-button icon="el-icon-edit" type="primary" @click="dialogFormVisible=true" v-if="power">新 增</el-button>
+            <el-dialog title="新 增" :visible.sync="dialogFormVisible" width="30%">
                 <el-form :model="form" ref="numberValidateForm">
                     <el-form-item label="优先级类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '优先级类别不能为空'}]">
                         <el-input v-model="form.name" auto-complete="off" placeholder="请输入优先级类别"></el-input>
@@ -26,7 +26,7 @@
                 </div>
             </el-dialog>
         </div>
-        <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
+        <el-table :data="tableData" border stripe height="500" style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column type="index" align=center label="编号" width="100">
             </el-table-column>
             <el-table-column align=center prop="name" label="优先级类别">
@@ -36,7 +36,7 @@
             <el-table-column align=center label="操作" v-if="power">
                 <template scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
-                    <el-dialog title="修 改" :visible.sync="dialogFormVisible1" size="tiny">
+                    <el-dialog title="修 改" :visible.sync="dialogFormVisible1" width="30%">
                         <el-form :model="form" ref="numberValidateFormEditUI">
                             <el-form-item label="优先级类别:" :label-width="formLabelWidth" prop="name" :rules="[{ required: true, message: '优先级类别不能为空'}]">
                                 <el-input v-model="form.name" auto-complete="off" placeholder="请输入优先级类别"></el-input>
@@ -57,7 +57,7 @@
         </el-table>
         <div class="grid-content bg-purple">
             <div class="block">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
                 </el-pagination>
             </div>
         </div>

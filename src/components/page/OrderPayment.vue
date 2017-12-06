@@ -23,8 +23,8 @@
                 </el-form-item>
                 
                 <el-form-item>
-                    <el-button icon="search" type="info" @click="onSubmit">查 询</el-button>
-                    <el-button icon="delete" @click="resetForm('form')">重 置</el-button>
+                    <el-button icon="el-icon-search" type="primary" @click="onSubmit">查 询</el-button>
+                    <el-button icon="el-icon-delete" @click="resetForm('form')">重 置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -32,7 +32,7 @@
             <el-button icon="edit" type="primary" @click="newAdd()">新 增</el-button>
             <el-button icon="check" type="success" @click="handleDownload()">导出为Excel</el-button>
         </div> -->
-        <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
+        <el-table :data="tableData" border stripe height="500" style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column align=center prop="id" label="序号">
             </el-table-column>
             <el-table-column align=center prop="orderId" label="订单号">
@@ -66,7 +66,7 @@
         </el-table>
         <div class="grid-content bg-purple">
             <div class="block">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
                 </el-pagination>
             </div>
         </div>

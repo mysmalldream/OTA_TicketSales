@@ -46,8 +46,7 @@
                 </el-form-item> -->
 
                 <el-form-item label="是否销售" prop="isSale">
-                    <el-switch v-model="form.isSale" on-text="是" off-text="否" on-color="#13ce66" off-color="#ff4949" on-value="是" off-value="否"
-                        @change="switch1">
+                    <el-switch v-model="form.isSale" active-text="" inactive-text="" active-color="#13ce66" inactive-color="#ccc" active-value="是" inactive-value="否" @change="switch1">
                     </el-switch>
                 </el-form-item>
                 <el-form-item label="门票类型" prop="type" :rules="[{ required: true, message: '门票类型不能为空'}]">
@@ -79,8 +78,7 @@
                     <el-input v-model="form.method"></el-input>
                 </el-form-item>
                 <el-form-item label="是否可退" prop="isCancel">
-                    <el-switch v-model="form.isCancel" on-text="是" off-text="否" on-color="#13ce66" off-color="#ff4949" on-value="是" off-value="否"
-                        @change="switch2">
+                    <el-switch v-model="form.isCancel" active-text="" inactive-text="" active-color="#13ce66" inactive-color="#ccc" active-value="是" inactive-value="否"  @change="switch2">
                     </el-switch>
                 </el-form-item>
                 <el-form-item label="入园须知" prop="notice" :rules="[{ required: true, message: '入园须知不能为空'}]">
@@ -96,8 +94,7 @@
                     <el-input type="textarea" v-model="form.remark"></el-input>
                 </el-form-item>
                 <el-form-item label="使用类别开关" prop="userType">
-                    <el-switch disabled v-model="form.userType" on-text="开启" off-text="禁用" on-color="#13ce66" off-color="#ff4949" on-value="1"
-                        off-value="0" @change="switch3">
+                    <el-switch disabled v-model="form.userType" active-text="" inactive-text="" active-color="#13ce66" inactive-color="#ccc" active-value="1" inactive-value="0" @change="switch3">
                     </el-switch>
                 </el-form-item>
                 <el-form-item label="优先级类别" prop="priorityType" :rules="[{ required: true, message: '优先级类别不能为空'}]">
@@ -210,7 +207,7 @@
                 }
             },
             switch1(val) {
-                // console.log("是否销售 :" + val)
+                console.log("是否销售 :" + val)
             },
             switch2(val) {
                 // console.log("是否可退 :" + val)
@@ -234,7 +231,7 @@
             },
             getAddress() {
                 axios.get(common.apidomain + "/product/editUI.action?id=" + this.$route.query.id).then((res) => {
-                    // console.log(res.data)
+                    console.log(res.data)
                     // console.log(res.data.data.priorityId)
                     // console.log(res.data.data.customId)
                     this.priorityIds = res.data.data.priorityId;
@@ -307,7 +304,7 @@
             },
             //修改提交
             onSubmit(formName) {
-                // console.log(this.form)
+                console.log(this.form)
                 // console.log(this.form.viewId)   //  id
                 // console.log(this.form.supplierId)   //  id 
                 // console.log(this.form.priorityId)   //  id 
@@ -326,7 +323,6 @@
                 } else {
                     this.form.priorityId;
                     // console.log(this.form.customId);
-
                 }
                 // console.log("----------")   
                 // console.log(this.viewId)   //  id

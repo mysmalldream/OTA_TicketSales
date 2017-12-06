@@ -7,7 +7,7 @@
                 <el-breadcrumb-item>审核</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
+        <el-table ref="multipleTable" height="500" @selection-change="handleSelectionChange" :data="tableData" border stripe style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column align=center prop="" label="" type="selection">
             </el-table-column>
             <el-table-column align=center prop="id" label="分销商编号">
@@ -21,7 +21,7 @@
                     <el-dialog
                         title="分销商证件查看"
                         :visible.sync="dialogVisible"
-                        size="tiny">
+                        width="25%">
                         <img v-for="item in listsPic" :id='item.id' :src='item' v-bind:key="item.id"  alt="" style="width:80%;height:40%;" >
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -48,7 +48,7 @@
         </el-table>
         <div class="grid-content bg-purple">
             <div class="block2">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" :page-sizes="[10, 20]" layout="total, prev, pager, next" :total="total">
                 </el-pagination>
             </div>
         </div>
