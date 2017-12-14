@@ -16,7 +16,7 @@
             </el-table-column>
             <el-table-column align=center prop="card" label="分销商证件">
 
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button  @click="dialogVisible = true,looks(scope.$index, scope.row)" size="small" >查看</el-button>
                     <el-dialog
                         title="分销商证件查看"

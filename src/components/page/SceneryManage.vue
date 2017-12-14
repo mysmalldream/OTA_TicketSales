@@ -77,7 +77,7 @@
             <el-table-column align=center prop="staffName" label="景区负责人">
             </el-table-column>
             <el-table-column align=center label="操作" v-if="power">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <router-link :to="{path:'/SceneryEdit',query: { id: scope.row.id }}">
                         <el-button type="success" size="small">修 改</el-button>
                     </router-link>

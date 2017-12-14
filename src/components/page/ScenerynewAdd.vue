@@ -261,7 +261,6 @@
                                     '<option>' + el + '</option>'
                             }, this);
                             $("#type").html(type);
-
                             data.data.viewLevel.forEach(function (el) { //景区等级
                                 level +=
                                     '<option>' + el + '</option>'
@@ -293,6 +292,7 @@
             button() {
                 // console.log("开始提交")
                 console.log(this.form);
+                console.log($('#name').val());
                 if ($('#name').val() == '') {
                     this.$message({
                         showClose: true,

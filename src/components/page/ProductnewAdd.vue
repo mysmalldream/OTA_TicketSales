@@ -187,7 +187,7 @@ export default {
         },
         getAddress() {
             axios.get(common.apidomain + "/product/addUI.action").then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 console.log(res.data.data.ticketType);
                 this.view = res.data.data.view;    //所属景区
                 this.supplier = res.data.data.supplier;    //供应商

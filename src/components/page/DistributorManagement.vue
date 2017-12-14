@@ -69,7 +69,7 @@
             <el-table-column align=center prop="state" label="分销商状态">
             </el-table-column>
             <el-table-column align=center label="操作" v-if="power">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <router-link :to="{path:'/DistributorEdit',query: { id: scope.row.id }}">
                         <el-button type="success" size="small">修 改</el-button>
                     </router-link>

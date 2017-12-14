@@ -34,7 +34,7 @@
             <el-table-column align=center prop="priority" label="优先级">
             </el-table-column>
             <el-table-column align=center label="操作" v-if="power">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="success" size="small" @click="dialogFormVisible1=true,editUI(scope.$index, scope.row)">修 改</el-button>
                     <el-dialog title="修 改" :visible.sync="dialogFormVisible1" width="30%">
                         <el-form :model="form" ref="numberValidateFormEditUI">

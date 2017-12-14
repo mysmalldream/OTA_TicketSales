@@ -6,6 +6,12 @@ import ElementUI from 'element-ui';
 import "element-ui/lib/theme-chalk/index.css";    // 默认主题    //"element-ui": "2.0.7",
 // import 'element-ui/lib/theme-default/index.css';    // 默认主题   //"element-ui": "1.4.8",
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
+// import "../static/css/calendar-price-jquery.min.css";       // 价格日历
+// import "../static/js/calendar-price-jquery.js";             // 价格日历
+
+// import "./assets/calendar-price-jquery.min.css";             // 价格日历
+// import "./assets/calendar-price-jquery.js";       // 价格日历
+
 import "babel-polyfill";
 import $ from 'jquery'
 // import MenuUtils from './utils/MenuUtils'
@@ -44,9 +50,6 @@ Vue.prototype.$axios = axios;
 //     }
 //   }
 // })
-
-
-
 
 
 new Vue({
