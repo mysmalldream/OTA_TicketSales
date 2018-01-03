@@ -7,6 +7,8 @@
 
 -	Version 2.0.0 element UI 版本修改为v2.0.7.
 -	Version 2.1.0 产品管理修改产品添加修改日历价格功能(引用的是第三方jq插件 "calendar-pirce-jquery": "^1.0.2",).
+
+-	Version 3.0.0 增加"特价商品管理"板块(包括增删改功能).
 ```
 
 

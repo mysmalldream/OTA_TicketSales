@@ -122,6 +122,29 @@ const router = new Router({
             require(["../components/page/OrderOff.vue"], resolve) // 已核销订单
         },
         {
+          path: "/Sparpreis",
+          meta: { requiresAuth: false },
+          component: resolve =>
+            require(["../components/page/Sparpreis.vue"], resolve) // 特价商品
+        },
+        {
+          path: "/SparpreisNewAdd",
+          meta: { requiresAuth: false },
+          component: resolve =>
+            require(["../components/page/SparpreisNewAdd.vue"], resolve) // 特价商品新增
+        },
+        {
+          path: "/SparpreisEdit",
+          meta: { requiresAuth: false },
+          component: resolve =>
+            require(["../components/page/SparpreisEdit.vue"], resolve) // 特价商品修改
+        },
+
+
+
+
+
+        {
           path: "/basetable",
           component: resolve =>
             require(["../components/page/BaseTable.vue"], resolve)
