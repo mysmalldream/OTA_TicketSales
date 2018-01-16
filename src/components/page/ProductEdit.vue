@@ -4,7 +4,7 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
                     <i class="el-icon-time"></i> 产品信息管理设置</el-breadcrumb-item>
-                <el-breadcrumb-item>新增</el-breadcrumb-item>
+                <el-breadcrumb-item>修改</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
@@ -60,7 +60,7 @@
                 </el-form-item>
                 <el-form-item label="票型" prop="ticketType" :rules="[{ required: true, message: '票型不能为空'}]">
                     <el-select v-model="form.ticketType" placeholder="请选择" @change="handleChange4">
-                        <el-option v-for="item in ticketType" :key="item.name" :label="item.name" :value="item"></el-option>
+                        <el-option v-for="item in ticketType" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="开始日期" prop="startTime" :rules="[{ required: true, message: '起止日期不能为空'}]">
@@ -253,7 +253,7 @@
                         console.log('数据重置成功！');
                     },
                     error: function (err) {
-                        console.error(err.msg);
+                        // console.error(err.msg);
                         // alert(err.msg);
                     },
                     // 自定义颜色
@@ -342,7 +342,7 @@
             },
             getEdit() {
                 axios.get(common.apidomain + "/product/addUI.action").then((res) => {
-                    // console.log(res.data);
+                    console.log(res.data);
                     this.view = res.data.data.view; //所属景区
                     this.supplier = res.data.data.supplier; //供应商
                     this.typeList = res.data.data.typeList; //门票类型
@@ -357,9 +357,9 @@
                     // console.log(res.data.data.random_calendar)
                     this.random_calendar = res.data.data.random_calendar; //价格日历随机数
                     this.datePrice = res.data.data.datePrice; //原价格日历字符串
-                    console.log(res.data.data.calendar)
+                    // console.log(res.data.data.calendar)
                     this.mockData = res.data.data.calendar; //日历价格数据
-                    console.log(res.data.data.calendar[0])
+                    // console.log(res.data.data.calendar[0])
                     this.startDate = res.data.data.calendar[0]; //日历价格开始日期
                     // console.log(res.data.data.calendar[res.data.data.calendar.length-1])
                     this.endDate = res.data.data.calendar[res.data.data.calendar.length - 1]; //日历价格结束日期
@@ -372,32 +372,8 @@
                     this.supplierId = res.data.data.supplierId;
                     this.priorityId = res.data.data.priorityId;
 
-                    this.form.id = res.data.data.id;
-                    this.form.name = res.data.data.name;
-                    this.form.viewName = res.data.data.viewName;
-                    this.form.supplierName = res.data.data.supplierName;
-                    this.form.endPrice = res.data.data.endPrice;
-                    this.form.marketPrice = res.data.data.marketPrice;
-                    this.form.salePrice = res.data.data.salePrice;
-                    this.form.isSale = res.data.data.isSale;
-                    this.form.type = res.data.data.type;
-                    this.form.num = res.data.data.num;
-                    this.form.ticketType = res.data.data.ticketType;
-                    this.form.orderTime = res.data.data.orderTime;
-                    this.form.method = res.data.data.method;
-                    this.form.startTime = res.data.data.startTime;
-                    this.form.endTime = res.data.data.endTime;
-                    this.form.isCancel = res.data.data.isCancel;
-                    this.form.notice = res.data.data.notice;
-                    this.form.costInside = res.data.data.costInside;
-                    this.form.costOutside = res.data.data.costOutside;
-                    this.form.remark = res.data.data.remark;
-                    this.form.userType = res.data.data.userType;
-                    this.form.sort = res.data.data.sort;
-                    this.form.dailySale = res.data.data.dailySale;
-
-                    this.form.priorityType = res.data.data.priorityType;
-                    this.form.customName = res.data.data.customName;
+                    this.form = res.data.data;   //回显的数据
+                   
                 })
             },
             //新增数据
@@ -413,15 +389,15 @@
                 this.ticketId = value;
             },
             handleChange4(value) {
-                // console.log(value)
+                console.log(value)
                 // this.form.priorityId = value;
             },
             handleChange5(value) {
-                // console.log(value)
+                console.log(value)
                 this.form.priorityId = value;
             },
             handleChange6(value) {
-                // console.log(value)
+                console.log(value)
                 this.form.customId = value;
                 //    var strId = "";
                 //     var strName = "";
@@ -463,6 +439,8 @@
                 // console.log(this.supplierId)   //  id 
                 // console.log(this.priorityId)   //  id  
                 //开始提交
+                // console.log(this.partPrice);
+                // console.log(encodeURI(this.partPrice));
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios.post(common.apidomain + "/product/edit.action?name=" + this.form.name +
@@ -477,8 +455,9 @@
                             "&customPro=" + this.customer + "&customId=" + this.form.customId + "&isSale=" +
                             this.form.isSale + "&isCancel=" + this.form.isCancel + "&viewId=" + this.viewId +
                             "&supplierId=" + this.supplierId + "&priorityId=" + this.form.priorityId +
-                            "&method=" + this.form.method + "&id=" + this.form.id + "&partPrice=" + this.partPrice +
-                            "&random_calendar=" + this.random_calendar + "&datePrice=" + this.datePrice).then(
+                            "&method=" + this.form.method + "&id=" + this.form.id + "&partPrice=" + encodeURI(this.partPrice) +
+                            "&random_calendar=" + this.random_calendar + "&datePrice=null").then(
+                            // "&random_calendar=" + this.random_calendar + "&datePrice=" + this.datePrice).then(
                             (res) => {
                                 // console.log(res.data)
                                 this.tableData = res.data.data; //表格数据

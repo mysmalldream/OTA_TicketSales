@@ -9,11 +9,17 @@
 -	Version 2.1.0 产品管理修改产品添加修改日历价格功能(引用的是第三方jq插件 "calendar-pirce-jquery": "^1.0.2",).
 
 -	Version 3.0.0 增加"特价商品管理"板块(包括增删改功能).
+-	Version 3.1.0 产品修改价格日历板块[{{"date":"2018-01-17","price":"99.0"}],的转码encodeURI  %5B%7B%22date%22:%222018-01-16%22,%22price%22.
+
 ```
 
 
 
 ![Image text](./name.jpg)
+
+Version 3.1.0 报错提示
+错误的原因是  [ { } ]  符号没有转码,需要使用的转码encodeURI转码;
+![Image text](./static/img/error1.png)
 # manage-system #
 基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://blog.gdfengshuo.com/example/work/)
 
