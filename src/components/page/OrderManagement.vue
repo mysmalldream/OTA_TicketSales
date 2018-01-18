@@ -18,7 +18,7 @@
                 <el-form-item label="" prop="useDateEnd">
                     <el-input type="date" v-model="form.useDateEnd"></el-input>
                 </el-form-item>
-                <el-form-item label="下单日期" prop="useDateEnd">
+                <el-form-item label="下单日期" prop="createDate">
                     <el-input type="date" v-model="form.createDate"></el-input>
                 </el-form-item>___
                 <el-form-item label="" prop="createDateEnd">

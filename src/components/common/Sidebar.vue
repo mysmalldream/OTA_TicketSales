@@ -158,28 +158,28 @@
                             },
                         ]
                     },
-                    {
-                        icon: 'el-icon-picture-outline',
-                        index: '9',
-                        title: '特价商品管理',
-                        hidden: true,
-                        subs: [{
-                                index: 'Sparpreis',
-                                title: '特价商品',
-                                hidden: true,
-                            },
-                            {
-                                index: 'SparpreisNewAdd',
-                                title: '新增',
-                                hidden: true,
-                            },
-                            //  {
-                            //     index: 'SparpreisEdit',
-                            //     title: '修改',
-                            //     hidden: true,
-                            // },
-                        ]
-                    },
+                    // {
+                    //     icon: 'el-icon-picture-outline',
+                    //     index: '9',
+                    //     title: '特价商品管理',
+                    //     hidden: true,
+                    //     subs: [{
+                    //             index: 'Sparpreis',
+                    //             title: '特价商品',
+                    //             hidden: true,
+                    //         },
+                    //         {
+                    //             index: 'SparpreisNewAdd',
+                    //             title: '新增',
+                    //             hidden: true,
+                    //         },
+                    //         //  {
+                    //         //     index: 'SparpreisEdit',
+                    //         //     title: '修改',
+                    //         //     hidden: true,
+                    //         // },
+                    //     ]
+                    // },
                     // {
                     //     icon: 'el-icon-menu',
                     //     index: '2',

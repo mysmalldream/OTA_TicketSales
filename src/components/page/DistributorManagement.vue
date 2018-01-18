@@ -48,6 +48,7 @@
         <div class="plugins-tips">
             <!-- <el-button icon="edit" type="primary" @click="newAdd()">新 增</el-button> -->
             <el-button icon="el-icon-check" type="success" @click="handleDownload()">导出为Excel</el-button>
+            <el-tag size="mini"> 分销商状态: 0表示未审核, 1表示正常, 2表示审核不通过, 3表示停用</el-tag>
         </div>
         <el-table :data="tableData" border stripe height="500" style="width: 100%" v-loading="loading" element-loading-text="玩儿命加载中···">
             <el-table-column align=center prop="id" label="分销商编号">
